@@ -1,5 +1,5 @@
 from math import sqrt
-from random import randint
+from random import uniform, randint
 from classes import Border
 import settings
 
@@ -23,14 +23,13 @@ def _ligne_droite(n: int, a: tuple, b: tuple) -> tuple:
         return (Border((x1, y1), (x1-n, y1)), Border((x2, y2), (x2-n, y2)), (x1-n, y1), (x2-n, y2))
 
 
-def _virage(d, a, b):
+def _virage(d, a, b, taille: int) -> tuple:
     """
     Crée un _virage et retourne les bordules du chemin aini que les nouveaux points a et b
     - d (int): direction du _virage (0=droite,1=gauche)
     - a et b (tuple de deux entiers): coordonnées des bords en entrée de _virage
     Retourne : [Bordure 1, Bordure 2, point a, point b]
     """
-    taille = settings.screen_size[0]
     x1, x2, y1, y2 = a[0], b[0], a[1], b[1]
     n = sqrt((x1-x2)**2 + (y1-y2) ** 2)
     x, y = x1-x2, y1-y2
@@ -84,13 +83,14 @@ def circuit_creation(n: int) -> list:
     - n (int): nombre de _virages du circuit
     Retourne: liste de Border
     """
+    taille = settings.screen_size[0]
     x1, x2, y1, y2 = 20, 20, 90, 130
     circuit = []
     a, b = (x1, y1), (x2, y2)
     for _ in range(n):  # on enchaine ligne droite et _virage n fois
-        n1 = randint(20, 80)
+        n1 = uniform(0.01, 0.2)*taille
         l1, l2, a, b = _ligne_droite(n1, a, b)
         d = randint(0, 1)
-        l3, l4, a, b = _virage(d, a, b)
+        l3, l4, a, b = _virage(d, a, b, taille)
         circuit += [l1, l2, l3, l4]
     return circuit
