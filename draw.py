@@ -1,6 +1,5 @@
 import pygame
-import math
-
+from math import *
 
 def circuit(screen: pygame.Surface, circuit: list):
     """Création du circuit sur l'écran
@@ -15,10 +14,10 @@ def car(screen: pygame.Surface, cars: list):
     - screen (pygame.Surface): écran du jeu
     - cars (list): liste de toutes les voitures (type Car)"""
     for car in cars:
-        A =[car.position[0] - 20, car.position[1] - 15]
-        B = [car.position[0] + 20, car.position[1] - 15]
-        C = [car.position[0] + 20, car.position[1] + 15]
-        D = [car.position[0] - 20, car.position[1] + 15]
+        A = rotate(car,[car.position[0] - 20, car.position[1] - 15])
+        B = rotate(car,[car.position[0] + 20, car.position[1] - 15])
+        C = rotate(car,[car.position[0] + 20, car.position[1] + 15])
+        D = rotate(car,[car.position[0] - 20, car.position[1] + 15])
         pygame.draw.line(screen, car.color, A, B, 5)
         pygame.draw.line(screen, car.color, B, C, 5)
         pygame.draw.line(screen, car.color, C, D, 5)
@@ -29,5 +28,5 @@ def rotate(car, X):
 	"""Applique une rotation à un point selon la position et la rotation de la voiture
 	- car (Car): voiture de référence
 	- X (tuple): position du point"""
-	return [(X[0] - car.position[0]) * math.cos(math.radians(car.abs_rotation)) - (X[1] - car.position[1]) * math.sin(math.radians(car.abs_rotation))+car.position[0],
-            (X[0] + car.position[0]) * math.sin(math.radians(car.abs_rotation)) + (X[1] - car.position[1]) * math.cos(math.radians(car.abs_rotation))+car.position[1]]
+	return [(X[0]-car.position[0])*radians(cos(car.abs_rotation))-(X[1]-car.position[1])*radians(sin(car.abs_rotation)) + car.position[0],
+    (X[1]-car.position[1])*radians(cos(car.abs_rotation))+(X[0]-car.position[0])*radians(sin(car.abs_rotation)) + car.position[1]]
