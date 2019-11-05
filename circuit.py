@@ -84,7 +84,7 @@ def circuit_creation(n: int) -> list:
     - n (int): nombre de _virages du circuit
     Retourne: liste de Border
     """
-    x1, x2, y1, y2 = 20, 90, 20, 130
+    x1, x2, y1, y2 = 20, 20, 90, 130
     circuit = []
     a, b = (x1, y1), (x2, y2)
     for _ in range(n):  # on enchaine ligne droite et _virage n fois
