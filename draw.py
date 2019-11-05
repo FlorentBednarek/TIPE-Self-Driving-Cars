@@ -28,5 +28,5 @@ def rotate(car, X):
 	"""Applique une rotation à un point selon la position et la rotation de la voiture
 	- car (Car): voiture de référence
 	- X (tuple): position du point"""
-	return [(X[0]-car.position[0])*radians(cos(car.abs_rotation))-(X[1]-car.position[1])*radians(sin(car.abs_rotation)) + car.position[0],
-    (X[1]-car.position[1])*radians(cos(car.abs_rotation))+(X[0]-car.position[0])*radians(sin(car.abs_rotation)) + car.position[1]]
+	return [(X[0]-car.position[0])*(cos(radians(car.abs_rotation)))-(X[1]-car.position[1])*(sin(radians(car.abs_rotation))) + car.position[0],
+    (X[1]-car.position[1])*(cos(radians(car.abs_rotation)))+(X[0]-car.position[0])*(sin(radians(car.abs_rotation))) + car.position[1]]
