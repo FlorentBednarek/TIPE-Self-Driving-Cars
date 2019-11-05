@@ -1,7 +1,7 @@
 import pygame
 
 # Maniabilité du véhicule (nombre de degrés par fps dans un virage)
-car_maniability = 2
+car_maniability = 2.5
 
 # Touches de contrôle de la voiture, gauche et droite
 left_key = pygame.K_LEFT
@@ -14,8 +14,10 @@ manual_control = True
 cars_number = 1
 
 # Images par seconde
-
 fps = 30
+
+# Couleur de la voiture (mode manuel uniquement)
+car_color = "#FF0000"
 
 # Taille de la fenêtre
 try :

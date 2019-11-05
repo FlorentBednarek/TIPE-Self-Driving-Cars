@@ -1,7 +1,7 @@
 import draw
 import key
 from circuit import circuit_creation
-from classes import * 
+from classes import *
 import pygame
 def main():
     print("""Lancement du programme
@@ -17,13 +17,13 @@ def main():
     screen = pygame.display.set_mode(settings.screen_size)
     pygame.display.set_caption("TIPE")
 
-    # circuit = [Border((10, 10), (10, 100)), 
-    #   Border((10, 100), (70, 200)), 
+    # circuit = [Border((10, 10), (10, 100)),
+    #   Border((10, 100), (70, 200)),
     #   Border((70, 200), (170, 200))
     #   ]
     circuit = circuit_creation(5) # A TESTER
     if settings.manual_control:
-        cars = [Car()]
+        cars = [Car(color=pygame.Color(settings.car_color))]
     else:
         cars = [Car() for _ in range(settings.cars_number)]
 
@@ -32,7 +32,7 @@ def main():
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False 
+                running = False
         screen.fill((255, 255, 255))
         draw.circuit(screen, circuit)
         draw.car(screen,cars)
