@@ -28,6 +28,7 @@ def main():
         cars = [Car() for _ in range(settings.cars_number)]
     running = True
     dt = 1
+    screen_width = settings.screen_size[0]
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -48,6 +49,10 @@ def main():
             if pressed[settings.right_key]:
                 cars[0].abs_rotation += settings.car_maniability * delta
             cars[0].apply_vector(cars[0].direction_vector())
+            if min(cars[0].position) < 0:
+                cars[0].set_position(max(cars[0].position[0],0),max(cars[0].position[1],0))
+            if max(cars[0].position) > screen_width:
+                cars[0].set_position(min(cars[0].position[0],screen_width),min(cars[0].position[1],screen_width))
             #print(cars[0].position)
 
 
