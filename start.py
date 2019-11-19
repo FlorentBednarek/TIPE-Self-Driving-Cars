@@ -26,7 +26,6 @@ def main():
         cars = [Car(color=pygame.Color(settings.car_color))]
     else:
         cars = [Car() for _ in range(settings.cars_number)]
-
     running = True
     dt = 1
     while running:
@@ -49,7 +48,7 @@ def main():
             if pressed[settings.right_key]:
                 cars[0].abs_rotation += settings.car_maniability * delta
             cars[0].apply_vector(cars[0].direction_vector())
-            print(cars[0].position)
+            #print(cars[0].position)
 
 
         dt = clock.tick(settings.fps)
