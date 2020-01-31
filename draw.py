@@ -1,5 +1,6 @@
 import pygame
 from math import *
+vector = pygame.math.Vector2
 
 def circuit(screen: pygame.Surface, circuit: list):
     """Création du circuit sur l'écran
@@ -30,3 +31,10 @@ def rotate(car, X:list) -> list:
 	- X (tuple): position du point"""
 	return [(X[0]-car.position[0])*cos(radians(car.abs_rotation)) - (X[1]-car.position[1])*sin(radians(car.abs_rotation)) + car.position[0],
     (X[1]-car.position[1])*cos(radians(car.abs_rotation)) + (X[0]-car.position[0])*sin(radians(car.abs_rotation)) + car.position[1]]
+
+
+def drawvec(screen,car,angle,length) :
+    v = length * vector(2 * cos(radians(car.abs_rotation + angle)), 
+            2 * sin(radians(car.abs_rotation + angle)))
+
+    pygame.draw.line(screen,car.color,(car.position[0],car.position[1]),(car.position[0]+v.x,car.position[1]+v.y),2)

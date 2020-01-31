@@ -1,6 +1,6 @@
 import pygame
 import math
-
+import draw
 vector = pygame.math.Vector2
 
 
@@ -40,6 +40,7 @@ class Car:
         self.color = color
         self.position = [100,100]
         self.abs_rotation = abs_rotation
+        self.distance = [0]*8
 
     def set_position(self, x: int, y: int):
         """Modifie la position absolue de la voiture
@@ -53,7 +54,7 @@ class Car:
         self.position[0] += vector.x
         self.position[1] += vector.y
 
-    def raytrace(self, angle: int, circuit: list, max_distance: int = 200, use_absolute_angle: bool = False, return_real_distance: bool = False):
+    def raytrace(self, angle: int, circuit: list, max_distance: int = 50, use_absolute_angle: bool = False, return_real_distance: bool = True):
         """Vérifie si le rayon d'angle donné rencontre un mur avant une certaine distance
         - angle (int): angle du rayon en degrés, 0 étant l'avant de la voiture
         - circuit (list): liste de tous les murs à prendre en compte, de type Border
@@ -74,6 +75,7 @@ class Car:
         if len(distances) == 0:
             return -1
         shortest_distance = min(distances)
+        print(">",shortest_distance)
         if shortest_distance > max_distance:
             return -1
         if return_real_distance:
@@ -85,6 +87,17 @@ class Car:
         return vector(2 * math.cos(math.radians(self.abs_rotation)), 
                       2 * math.sin(math.radians(self.abs_rotation)))
 
+    def detection(self,circuit : list,screen):
+        print("=========")
+        
+        print(self.position)
+        print("=========")
+        for i,a in enumerate(self.distance) :
+            a = self.raytrace( 20 * i- 90,circuit )
+            draw.drawvec(screen,self,20*i-70,50)
+            print(str(a) +","+ str( 20 * i - 70 ))
+
+        
 
 class Border:
     """Represente une bordure de circuit
@@ -97,8 +110,3 @@ class Border:
         self.end = B
 
 
-# # -- Tests de raytracing -- #
-# borders = [Border((8,10),(-2,10)), Border((5,9),(-6,7))]
-# car = Car(abs_rotation=60)
-# car.set_position(1,0.5)
-# print(car.raytrace(0, borders, max_distance=12, return_real_distance=True))
