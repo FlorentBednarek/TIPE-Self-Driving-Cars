@@ -17,11 +17,11 @@ def main():
     screen = pygame.display.set_mode(settings.screen_size)
     pygame.display.set_caption("TIPE")
 
-    circuit = [Border((10, 10), (10, 100)),
-    Border((10, 100), (70, 200)),
-    Border((70, 200), (170, 200))
-    ]
-    #circuit = circuit_creation(5) # A TESTER
+    """circuit = [Border((10, 10), (10, 100)),
+                Border((10, 100), (70, 200)),
+                Border((70, 200), (170, 200))
+                ]"""
+    circuit = circuit_creation(5) # A TESTER
     if settings.manual_control:
         cars = [Car(color=pygame.Color(settings.car_color))]
     else:
@@ -36,7 +36,8 @@ def main():
         screen.fill((255, 255, 255))
         draw.circuit(screen, circuit)
         draw.car(screen,cars)
-        cars[0].detection(circuit,screen)
+        if not cars[0].detection(circuit,screen) :
+            running = False
         pygame.display.flip()
 
         # Gestion du mouvement de la voiture

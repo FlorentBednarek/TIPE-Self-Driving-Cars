@@ -28,7 +28,22 @@ def lineRayIntersectionPoint(rayOrigin: tuple, rayDirection: tuple, point1: tupl
         return [rayOrigin + t1 * rayDirection]
     return []
 
+def line_intersection(line1, line2):
+    xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])
+    ydiff = (line1[0][1] - line1[1][1], line2[0][1] - line2[1][1])
 
+    def det(a, b):
+        return a[0] * b[1] - a[1] * b[0]
+
+    div = det(xdiff, ydiff)
+    if div == 0:
+        return []
+    d = (det(*line1), det(*line2))
+    x = det(d, xdiff) / div
+    y = det(d, ydiff) / div
+    if x>=min(line1[0][0],line1[1][0]) and x<=max(line1[0][0],line1[1][0]) and y>=min(line2[0][1],line2[1][1]) and y<max(line2[0][1],line2[1][1]):
+        return [x, y]
+    return []
 class Car:
     """Represente une voiture
     color represente la couleur de la voiture, de type pygame.Color"""
@@ -54,7 +69,7 @@ class Car:
         self.position[0] += vector.x
         self.position[1] += vector.y
 
-    def raytrace(self, angle: int, circuit: list, max_distance: int = 50, use_absolute_angle: bool = False, return_real_distance: bool = True):
+    def raytrace(self, angle: int, circuit: list, max_distance: int = 100, use_absolute_angle: bool = False, return_real_distance: bool = True):
         """Vérifie si le rayon d'angle donné rencontre un mur avant une certaine distance
         - angle (int): angle du rayon en degrés, 0 étant l'avant de la voiture
         - circuit (list): liste de tous les murs à prendre en compte, de type Border
@@ -69,13 +84,12 @@ class Car:
         angle = math.radians(angle)
         direction = vector(round(math.cos(angle), 5),
                            round(math.sin(angle), 5))
-        distances = [lineRayIntersectionPoint(self.position, direction, (
-            line.start[0], line.start[1]), (line.end[0], line.end[1])) for line in circuit]
-        distances = [x[0].length() for x in distances if len(x) > 0]
+        distances = [line_intersection((self.position,vector(2 * math.cos(angle),2 * math.sin(angle))*2000),(line.start,line.end)) for line in circuit]
+        
+        distances = [vector(x[0]-self.position[0],x[1]-self.position[1]).length() for x in distances if len(x) != 0]
         if len(distances) == 0:
             return -1
         shortest_distance = min(distances)
-        print(">",shortest_distance)
         if shortest_distance > max_distance:
             return -1
         if return_real_distance:
@@ -93,9 +107,12 @@ class Car:
         print(self.position)
         print("=========")
         for i,a in enumerate(self.distance) :
-            a = self.raytrace( 20 * i- 90,circuit )
-            draw.drawvec(screen,self,20*i-70,50)
-            print(str(a) +","+ str( 20 * i - 70 ))
+            a = self.raytrace( 20 * i- 70,circuit )
+            if a !=-1 :draw.drawvec(screen,self,20*i-70,50)
+            print(str(a) +","+ str( 20 * i - 70))
+            if a >= 0 and a<=15 :
+                return 0
+        return 1   
 
         
 

@@ -36,5 +36,5 @@ def rotate(car, X:list) -> list:
 def drawvec(screen,car,angle,length) :
     v = length * vector(2 * cos(radians(car.abs_rotation + angle)), 
             2 * sin(radians(car.abs_rotation + angle)))
-
+    
     pygame.draw.line(screen,car.color,(car.position[0],car.position[1]),(car.position[0]+v.x,car.position[1]+v.y),2)
