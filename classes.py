@@ -44,6 +44,8 @@ def line_intersection(line1, line2):
     if x>=min(line1[0][0],line1[1][0]) and x<=max(line1[0][0],line1[1][0]) and y>=min(line2[0][1],line2[1][1]) and y<max(line2[0][1],line2[1][1]):
         return [x, y]
     return []
+
+
 class Car:
     """Represente une voiture
     color represente la couleur de la voiture, de type pygame.Color"""
@@ -55,7 +57,7 @@ class Car:
         self.color = color
         self.position = [100,100]
         self.abs_rotation = abs_rotation
-        self.distance = [0]*8
+        self.distances = [0]*8
 
     def set_position(self, x: int, y: int):
         """Modifie la position absolue de la voiture
@@ -85,7 +87,6 @@ class Car:
         direction = vector(round(math.cos(angle), 5),
                            round(math.sin(angle), 5))
         distances = [line_intersection((self.position,vector(2 * math.cos(angle),2 * math.sin(angle))*2000),(line.start,line.end)) for line in circuit]
-        
         distances = [vector(x[0]-self.position[0],x[1]-self.position[1]).length() for x in distances if len(x) != 0]
         if len(distances) == 0:
             return -1
@@ -98,19 +99,17 @@ class Car:
 
     def direction_vector(self):
         """Renvoie un vecteur unitaire dans la direction de self.abs_rotation"""
-        return vector(2 * math.cos(math.radians(self.abs_rotation)), 
+        return vector(2 * math.cos(math.radians(self.abs_rotation)),
                       2 * math.sin(math.radians(self.abs_rotation)))
 
     def detection(self,circuit : list,screen):
-        
-        for i,a in enumerate(self.distance) :
-            a = self.raytrace( 20 * i- 70,circuit )
-            if a !=-1 : draw.drawvec(screen,self,20*i-70,50)
-            if a >= 0 and a<=15 :
+        for i, a in enumerate(self.distances) :
+            a = self.raytrace(20 * i- 70,circuit)
+            if a !=-1 : draw.drawvec(screen, self, 20*i-70, 50)
+            if a >= 0 and a <= 15 :
                 return 0
-        return 1   
+        return 1
 
-        
 
 class Border:
     """Represente une bordure de circuit
@@ -121,5 +120,3 @@ class Border:
         self.color = color
         self.start = A
         self.end = B
-
-
