@@ -8,7 +8,7 @@ left_key = pygame.K_LEFT
 right_key = pygame.K_RIGHT
 
 # Contrôle manuel de la voiture
-manual_control = True
+manual_control = False
 
 # Nombre de voitures lors du mode automatique
 cars_number = 1
