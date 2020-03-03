@@ -63,7 +63,7 @@ def generate_point(point_a: tuple, point_b: tuple, screen_size: tuple, last_move
         if cost < max_cost:
             angle = abs(calc_angle(point_a, (new_x, new_y), point_b))
             min_angle += 250/sqrt(distance_a_b)
-    print(cost, max_cost, "|", angle, min_angle, "|", i)
+    # print(cost, max_cost, "|", angle, min_angle, "|", i)
     if cost > max_cost or not check_borders or angle < MIN_ANGLE_DEGREES or angle > MAX_ANGLE_DEGREES:
         (new_x, new_y), last_move = generate_point(point_a, point_b, screen_size, last_move, i)
     return (round(new_x), round(new_y)), last_move
@@ -134,7 +134,7 @@ def add_width_2(pathway: typing.List[tuple]) -> typing.List[Border]:
     vect.scale_to_length(new_delta)
     points_over.append((pathway[0][0] - vect.x/2, pathway[0][1] - vect.y/2))
     points_under.append((pathway[0][0] + vect.x/2, pathway[0][1] + vect.y/2))
-    print(new_delta)
+    # print(new_delta)
     # Other points
     for enum in range(1, len(pathway)-1):
         point1, point2, point3 = pathway[enum-1], pathway[enum], pathway[enum+1]
@@ -142,7 +142,7 @@ def add_width_2(pathway: typing.List[tuple]) -> typing.List[Border]:
                 + Vector(point3[0]-point2[0], point3[1]-point2[1])
         vect.rotate_ip(90)
         new_delta = max(min(new_delta + random.randrange(*delta), MAX_PATH_WIDTH), MIN_PATH_WIDTH)
-        print(new_delta)
+        # print(new_delta)
         vect.scale_to_length(new_delta)
         # points_over.append(point2)
         points_over.append((point2[0]-vect.x/2, point2[1]-vect.y/2))
@@ -154,8 +154,8 @@ def add_width_2(pathway: typing.List[tuple]) -> typing.List[Border]:
     points_over.append((pathway[-1][0] - vect.x/2, pathway[-1][1] - vect.y/2))
     points_under.append((pathway[-1][0] + vect.x/2, pathway[-1][1] + vect.y/2))
     # Cleanup of points
-    print(check_angles(points_over))
-    print(check_angles(points_under))
+    # print(check_angles(points_over))
+    # print(check_angles(points_under))
     for path in (points_over, points_under):
         for index in range(len(path)-1):
             color = ((index*100+70)%255, (index*90+20)%255, (index*50+40)%255)
@@ -167,7 +167,7 @@ def add_width_2(pathway: typing.List[tuple]) -> typing.List[Border]:
     return result
 
 
-def circuit_creation(*args):
+def circuit_creation():
     pathway = [START_POINT] + INTERMEDIATE_POINTS + [END_POINT]
     colors = [((index*100+70)%255, (index*90+20)%255, (index*50+40)%255) for index in range(120)]
     for _ in range(GENERATIONS_NUMBER):
@@ -180,5 +180,5 @@ def circuit_creation(*args):
                 pathway.insert(index2+1, new_point)
                 index2 += 1
             index2 += 1
-    print("\n", len(pathway), "points")
+    # print("\n", len(pathway), "points")
     return add_width_2(pathway)

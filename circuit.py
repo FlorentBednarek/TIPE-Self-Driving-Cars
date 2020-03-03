@@ -35,7 +35,7 @@ def ligne_droite_old(n,a,b):    #n est le nombre de pixels de la ligne droite, a
         new_a = (x1-n,y1)
         new_b = (x2-n,y2)
     else:
-        print("a = {} | b = {} | dx = {} | dy = {} | n = {}".format(a,b,dx,dy,n))
+        # print("a = {} | b = {} | dx = {} | dy = {} | n = {}".format(a,b,dx,dy,n))
         return (None,None,a,b)
     return (Border((x1,y1),new_a),Border((x2,y2),new_b),new_a,new_b)
 
@@ -64,7 +64,7 @@ def ligne_droite(n,a,b):    #n est le nombre de pixels de la ligne droite, a et 
         new_a = (x1+n,y1)
         new_b = (x2+n,y2)
     else:
-        print("a = {} | b = {} | dx = {} | dy = {} | n = {}".format(a,b,dx,dy,n))
+        # print("a = {} | b = {} | dx = {} | dy = {} | n = {}".format(a,b,dx,dy,n))
         return (None,None,a,b)
     return (Border((x1,y1),new_a),Border((x2,y2),new_b),new_a,new_b)
 
@@ -174,7 +174,7 @@ def circuit_creation(n):  # n nombre de virages du circuit
     a,b = (x1,y1), (x2,y2)
     A = segmentation()
     for i in range(n):   #on enchaine ligne droite et virage n fois
-        print("ligne depuis a =",a," b=",b)
+        # print("ligne depuis a =",a," b=",b)
         cst = a[0] - a[0]%taille/10
         case_width = round(taille/10)
         distance_to_case = round(sqrt( (a[0]%case_width-case_width)**2 + (a[1]%case_width-case_width)**2 ))
@@ -184,7 +184,7 @@ def circuit_creation(n):  # n nombre de virages du circuit
         a,b = new_lines[2],new_lines[3]
         a,b = (round(a[0]),round(a[1])), (round(b[0]),round(b[1]))
         d = randint(0,1)
-        print("virage depuis a =",a," b =",b)
+        # print("virage depuis a =",a," b =",b)
         l1,l2,a,b = virage(d,a,b)
         a,b = (round(a[0]),round(a[1])), (round(b[0]),round(b[1]))
         x, y = round(a[0]-b[0]), round(a[1]-b[1])
@@ -205,7 +205,7 @@ def circuit_creation(n):  # n nombre de virages du circuit
             if A[bloc_actuel[0]-1][bloc_actuel[1]] != 0:
                 A[bloc_actuel[0]][bloc_actuel[1]]=0
                 circuit += [l1,l2]
-    print("\ntaille du circuit:",len(circuit))
+    # print("\ntaille du circuit:",len(circuit))
     #for x in circuit:
     #    print(x.start,x.end)
     circuit = [x for x in circuit if x!=None]

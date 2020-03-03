@@ -15,14 +15,14 @@ def car(screen: pygame.Surface, cars: list):
     - screen (pygame.Surface): écran du jeu
     - cars (list): liste de toutes les voitures (type Car)"""
     for car in cars:
-        A = rotate(car,[car.position[0] - 20, car.position[1] - 15])
-        B = rotate(car,[car.position[0] + 20, car.position[1] - 15])
-        C = rotate(car,[car.position[0] + 20, car.position[1] + 15])
-        D = rotate(car,[car.position[0] - 20, car.position[1] + 15])
-        pygame.draw.line(screen, car.color, A, B, 5)
-        pygame.draw.line(screen, car.color, B, C, 5)
-        pygame.draw.line(screen, car.color, C, D, 5)
-        pygame.draw.line(screen, car.color, D, A, 5)
+        A = rotate(car,[car.position[0] - 10, car.position[1] - 7])
+        B = rotate(car,[car.position[0] + 10, car.position[1] - 7])
+        C = rotate(car,[car.position[0] + 10, car.position[1] + 7])
+        D = rotate(car,[car.position[0] - 10, car.position[1] + 7])
+        pygame.draw.line(screen, car.color, A, B, 2)
+        pygame.draw.line(screen, car.color, B, C, 2)
+        pygame.draw.line(screen, car.color, C, D, 2)
+        pygame.draw.line(screen, car.color, D, A, 2)
 
 
 def rotate(car, X:list) -> list:
@@ -34,7 +34,7 @@ def rotate(car, X:list) -> list:
 
 
 def drawvec(screen,car,angle,length) :
-    v = length * vector(2 * cos(radians(car.abs_rotation + angle)), 
+    v = length * vector(2 * cos(radians(car.abs_rotation + angle)),
             2 * sin(radians(car.abs_rotation + angle)))
-    
+
     pygame.draw.line(screen,car.color,(car.position[0],car.position[1]),(car.position[0]+v.x,car.position[1]+v.y),2)

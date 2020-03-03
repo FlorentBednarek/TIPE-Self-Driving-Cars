@@ -8,7 +8,6 @@ def ligne_droite(n,a,b):    #n est le nombre de pixels de la ligne droite, a et 
     taille=settings.screen_size[0]
     x1,x2,y1,y2=a[0],b[0],a[1],b[1]
     x,y=x1-x2,y1-y2
-    print(x,y)
     if x<0 and y1>n:
         return(Border((x1,y1),(x1,y1-n)),Border((x2,y2),(x2,y2-n)),(x1,y1-n),(x2,y2-n))
     if x>0 and y1<((taille/2)-n):
@@ -26,7 +25,7 @@ def ligne_droite(n,a,b):    #n est le nombre de pixels de la ligne droite, a et 
     if y>0:
         return(Border((x1,y1),(x1-n,y1)),Border((x2,y2),(x2-n,y2)),(x1-n,y1),(x2-n,y2))
     else:
-        print("retourne none")
+        # print("retourne none")
         return(None,None,a,b)
 
 #def decoupe(M,i,j):             #decoupage par blocs

@@ -1,8 +1,10 @@
 import draw
 from circuit_arthur import circuit_creation
 from classes import *
-import pygame
+import pygame, time
 import NN
+
+
 def main():
     print("""Lancement du programme
 
@@ -17,11 +19,11 @@ def main():
     screen = pygame.display.set_mode(settings.screen_size)
     pygame.display.set_caption("TIPE")
 
-    """circuit = [Border((10, 10), (10, 100)),
-                Border((10, 100), (70, 200)),
-                Border((70, 200), (170, 200))
-                ]"""
-    circuit = circuit_creation(5) # A TESTER
+    # circuit = [Border((10, 10), (10, 100)),
+    #             Border((10, 100), (70, 200)),
+    #             Border((70, 200), (170, 200))
+    #             ]
+    circuit = circuit_creation()
     if settings.manual_control:
         cars = [Car(color=pygame.Color(settings.car_color))]
     else:
@@ -57,9 +59,11 @@ def main():
                 cars[0].set_position(min(cars[0].position[0],screen_width),min(cars[0].position[1],screen_width))
             #print(cars[0].position)
 
-
-
         dt = clock.tick(settings.fps)
+        # dt = clock.tick(2)
+
+    print("MDR T MORT")
+    time.sleep(5)
     pygame.quit()
 
 

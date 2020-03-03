@@ -102,11 +102,13 @@ class Car:
         return vector(2 * math.cos(math.radians(self.abs_rotation)),
                       2 * math.sin(math.radians(self.abs_rotation)))
 
-    def detection(self,circuit : list,screen):
+    def detection(self, circuit:list, screen):
+        """Détecte si la voiture est en collision avec une bordure du circuit"""
         for i, a in enumerate(self.distances) :
-            a = self.raytrace(20 * i- 70,circuit)
-            if a !=-1 : draw.drawvec(screen, self, 20*i-70, 50)
-            if a >= 0 and a <= 15 :
+            a = self.raytrace(20*i-70, circuit, 30, return_real_distance=True)
+            if a !=-1 :
+                draw.drawvec(screen, self, 20*i-70, 30)
+            if a >= 0 and a <= 7 :
                 return 0
         return 1
 
