@@ -1,6 +1,6 @@
 import draw
 import key
-from circuit import circuit_creation
+from circuit_arthur import circuit_creation
 from classes import *
 import pygame
 def main():

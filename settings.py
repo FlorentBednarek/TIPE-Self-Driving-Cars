@@ -14,13 +14,13 @@ manual_control = True
 cars_number = 1
 
 # Images par seconde
-fps = 30
+fps = 60
 
 # Couleur de la voiture (mode manuel uniquement)
 car_color = "#FF0000"
 
 # Taille de la fenêtre
 try :
-	screen_size = [int(pygame.display.Info().current_h * 0.7)]*2
+	screen_size = [1200,700]
 except :
-	screen_size = [800]*2
+	screen_size = [1200,700]
