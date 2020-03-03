@@ -20,7 +20,4 @@ fps = 60
 car_color = "#FF0000"
 
 # Taille de la fenêtre
-try :
-	screen_size = [1200,700]
-except :
-	screen_size = [1200,700]
+screen_size = [1200,700]

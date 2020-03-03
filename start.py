@@ -18,11 +18,11 @@ def main():
     screen = pygame.display.set_mode(settings.screen_size)
     pygame.display.set_caption("TIPE")
 
-    circuit = [Border((10, 10), (10, 100)),
-                Border((10, 100), (70, 200)),
-                Border((70, 200), (170, 200))
-                ]
-    # circuit = circuit_creation()
+    # circuit = [Border((10, 10), (10, 100)),
+    #             Border((10, 100), (70, 200)),
+    #             Border((70, 200), (170, 200))
+    #             ]
+    circuit = circuit_creation()
     if settings.manual_control:
         cars = [Car(circuit, color=pygame.Color(settings.car_color), )]
     else:
@@ -39,10 +39,11 @@ def main():
         draw.circuit(screen, circuit)
         draw.car(screen,cars)
 
-        pygame.display.flip()
+
 
         # Gestion du mouvement de la voiture
-        delta = dt * settings.fps / 1000
+        # delta = dt * settings.fps / 1000
+        delta = 1
         if settings.manual_control:
             pressed = pygame.key.get_pressed()
 
@@ -76,10 +77,11 @@ def main():
             if len(networks) == 0:
                 running = False
                 print("MDR PLUS DE VOITURES")
-                time.sleep(3)
+                time.sleep(0)
 
-        dt = clock.tick(settings.fps)
-        # dt = clock.tick(2)
+        pygame.display.flip()
+        # dt = clock.tick(settings.fps)
+        dt = clock.tick(2)
 
     pygame.quit()
 

@@ -55,13 +55,13 @@ class Car:
         - color (pygame.Color): couleur de la voiture [par défaut rouge]
         - abs_rotation (float): rotation par rapport au plan de la voiture [par défaut sud]"""
         self.color = color
-        self.position = [100,100]
+        self.position = [110,180]
         self.abs_rotation = abs_rotation
         self.circuit = circuit
 
     @property
     def distances(self):
-        return [self.raytrace(20*i-70, 30, return_real_distance=True) for i in range(8)]
+        return [self.raytrace(20*i-70, 40, return_real_distance=True) for i in range(8)]
         pass
 
     def set_position(self, x: int, y: int):
@@ -111,8 +111,8 @@ class Car:
         """Détecte si la voiture est en collision avec une bordure du circuit"""
         for i, a in enumerate(self.distances):
             if a !=-1 :
-                draw.drawvec(screen, self, 20*i-70, 30)
-            if a >= 0 and a <= 7 :
+                draw.drawvec(screen, self, 20*i-70, 40)
+            if a >= 0 and a <= 8 :
                 return 0
         return 1
 
