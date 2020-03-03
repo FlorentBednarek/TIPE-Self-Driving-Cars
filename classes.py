@@ -61,7 +61,7 @@ class Car:
 
     @property
     def distances(self):
-        return [self.raytrace(20*i-70, 40, return_real_distance=True) for i in range(8)]
+        return [self.raytrace(36*i-70, 40, return_real_distance=True) for i in range(5)]
         pass
 
     def set_position(self, x: int, y: int):
@@ -97,7 +97,9 @@ class Car:
             return -1
         shortest_distance = min(distances)
         if shortest_distance > max_distance:
-            return -1
+            if return_real_distance:
+                return -1
+            return 0
         if return_real_distance:
             return shortest_distance
         return shortest_distance/max_distance
@@ -111,7 +113,7 @@ class Car:
         """Détecte si la voiture est en collision avec une bordure du circuit"""
         for i, a in enumerate(self.distances):
             if a !=-1 :
-                draw.drawvec(screen, self, 20*i-70, 40)
+                draw.drawvec(screen, self, 36*i-70, 40)
             if a >= 0 and a <= 8 :
                 return 0
         return 1

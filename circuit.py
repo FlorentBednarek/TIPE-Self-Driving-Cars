@@ -167,7 +167,7 @@ def virage2(a:tuple,b:tuple):
     return(Border((x1,y1),new_a),Border((x2,y2),new_b),new_a,new_b)
 
 def circuit_creation(n):  # n nombre de virages du circuit
-    x1,y1 = 170,100
+    x1,y1 = 110,180
     x2,y2 = x1+PATH_WIDTH, y1
     circuit = []
     taille = settings.screen_size[0]

@@ -2,49 +2,49 @@ from classes import Car
 import random, typing
 from math import exp
 
-def sig(n: float):
-    return (1/(1+exp(n)))
+def sig(n: float,a):
+    return (1/(1+exp(-a*n)))
 
 
 class Network:
 
     def __init__(self, car: Car):
-        self.I_layer = [Neuron(0) for _ in range(8)]
+        self.I_layer = [Neuron(0) for _ in range(5)]
         self.layer_2 = [Neuron(0) for _ in range(4)]
-        self.layer_3 = [Neuron(0) for _ in range(4)]
+        self.layer_3 = [Neuron(0) for _ in range(3)]
         self.layer_4 = [Neuron(0) for _ in range(2)]
         self.O_layer = [Neuron(0)]
+        self.const_neuron = Neuron(1)
+        self.score = 0
+        self.dead = 0
         self.car = car
 
     def update(self):
         # self.I_layer = [Neuron(max(x,0)) for x in self.car.distances]
-        self.I_layer = [Neuron(max(0, self.car.raytrace(20*i-70, 40, return_real_distance=False))) for i in range(8)]
-        print(self.I_layer)
-        # for neuron in self.I_layer:
-        #     # neuron.normalize()
-        #     neuron.value /= 40
-        print("après normalisation",self.I_layer)
+        self.I_layer = [Neuron(max(0, self.car.raytrace(36*i-70, 40, return_real_distance=False))) for i in range(5)]
+        for neuron in self.I_layer:
+            pass
+
+        #    neuron.normalize()
         for neuron in self.layer_2:
-            neuron.update_value(self.I_layer)
+            neuron.update_value(self.I_layer,self.const_neuron)
         for neuron in self.layer_3:
-            neuron.update_value(self.layer_2)
+            neuron.update_value(self.layer_2,self.const_neuron)
         for neuron in self.layer_4:
-            neuron.update_value(self.layer_3)
+            neuron.update_value(self.layer_3,self.const_neuron)
         for neuron in self.O_layer:
-            neuron.update_value(self.layer_4)
-        # print("1",self.I_layer,
-        # "\n2", self.layer_2,
-        # "\n3", self.layer_3,
-        # "\n4", self.layer_4,
-        # "\nOUTPUT", self.O_layer)
+            neuron.update_value(self.layer_4,self.const_neuron)
+            
+        #print("1",self.I_layer,
+        #"\n2", self.layer_2,
+        #"\n3", self.layer_3,
+        #"\n4", self.layer_4,
+        #"\nOUTPUT", self.O_layer)
 
     @property
-    def left(self):
-        return self.O_layer[0].value < 0.5
-    @property
-    def right(self):
-        return self.O_layer[0].value > 0.5
-
+    def direction(self):
+        return self.layer_4[0].value *2-1
+    
 
 class Neuron:
 
@@ -54,11 +54,11 @@ class Neuron:
         self.bias = random.random()
 
     def normalize(self):
-        self.value = sig(self.value)
+        self.value = round(sig(self.value,2),4)
 
-    def update_value(self, neurons: typing.List['Neuron']):
-        self.value = round(abs(sum([x.value*x.weight for x in neurons])), 6)
-        # self.normalize()
+    def update_value(self, neurons: typing.List['Neuron'], const,a = 1):
+        self.value = round(sum([x.value*x.weight for x in neurons]) + (const.value * const.weight),4)
+        self.normalize()
 
     def __str__(self):
         return str((self.value, self.weight, self.bias))

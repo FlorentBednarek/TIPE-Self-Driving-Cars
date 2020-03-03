@@ -7,7 +7,7 @@ from pygame.math import Vector2 as Vector
 from classes import Border
 
 SCREEN_SIZE = (1200, 700)
-START_POINT = (80, 100)
+START_POINT = (60, 130)
 END_POINT = (1100, 600)
 INTERMEDIATE_POINTS = [(160, 570), (515, 540), (565, 220), (900, 140)] # [(200, 500), (550, 610)]
 MIN_ANGLE_DEGREES = 90 # 45
