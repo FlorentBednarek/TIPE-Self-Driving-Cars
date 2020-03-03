@@ -1,8 +1,8 @@
 import draw
-import key
 from circuit_arthur import circuit_creation
 from classes import *
 import pygame
+import NN
 def main():
     print("""Lancement du programme
 

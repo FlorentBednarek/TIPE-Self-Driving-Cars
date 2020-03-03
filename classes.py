@@ -69,7 +69,7 @@ class Car:
         self.position[0] += vector.x
         self.position[1] += vector.y
 
-    def raytrace(self, angle: int, circuit: list, max_distance: int = 100, use_absolute_angle: bool = False, return_real_distance: bool = True):
+    def raytrace(self, angle: int, circuit: list, max_distance: int = 100, use_absolute_angle: bool = False, return_real_distance: bool = False):
         """Vérifie si le rayon d'angle donné rencontre un mur avant une certaine distance
         - angle (int): angle du rayon en degrés, 0 étant l'avant de la voiture
         - circuit (list): liste de tous les murs à prendre en compte, de type Border
@@ -102,14 +102,10 @@ class Car:
                       2 * math.sin(math.radians(self.abs_rotation)))
 
     def detection(self,circuit : list,screen):
-        print("=========")
         
-        print(self.position)
-        print("=========")
         for i,a in enumerate(self.distance) :
             a = self.raytrace( 20 * i- 70,circuit )
-            if a !=-1 :draw.drawvec(screen,self,20*i-70,50)
-            print(str(a) +","+ str( 20 * i - 70))
+            if a !=-1 : draw.drawvec(screen,self,20*i-70,50)
             if a >= 0 and a<=15 :
                 return 0
         return 1   
