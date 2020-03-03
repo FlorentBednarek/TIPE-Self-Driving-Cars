@@ -97,7 +97,6 @@ def main():
 
         for net in networks:
             net.score = vector(net.car.position,[110,180]).length()
-            print(net.score)
 
         networks = darwin(networks)
         for net in networks:
