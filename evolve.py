@@ -12,7 +12,7 @@ def Shuffle(n1,n2):
             else :
                 w = n2.I_layer[j].weight[k]
     for j,neuron in enumerate(n1.layer_2):
-        for w in neuron.weight:    
+        for w in neuron.weight:
 
             i = random.random()
             if i <0.5:
@@ -47,8 +47,10 @@ def darwin(networks):
     #7-8 become half new half first 2
     #9-10 become new
     mutation_rate = 0.3
-    rank = {net : net.score for net in networks}
-    rank = {k: v for k, v in sorted(rank.items(), key=lambda item: item[1])}
+    # rank = {net : net.score for net in networks}
+    # rank = {k: v for k, v in sorted(rank.items(), key=lambda item: item[1])}
+    rank = {net: net.score for net in sorted(networks, key=lambda item: item.score)}
+    print(rank)
     rank2 = []
     for k,v in enumerate(rank):
         rank2.append(v)
@@ -69,7 +71,7 @@ def darwin(networks):
         for neuron in net.layer_3 :
             for w in neuron.weight:
                 if random.random() <mutation_rate :
-                    w = random.random() *2 -1        
+                    w = random.random() *2 -1
         for neuron in net.layer_4 :
             for w in neuron.weight:
                 if random.random() <mutation_rate :
@@ -79,4 +81,3 @@ def darwin(networks):
                 if random.random() <mutation_rate :
                     w = random.random() *2 -1
     return rank2
-    

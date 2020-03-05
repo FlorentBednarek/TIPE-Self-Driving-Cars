@@ -44,7 +44,7 @@ def main():
     while running:
         endgen = 0
         while not endgen:
-            
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -75,19 +75,19 @@ def main():
                 #print(cars[0].position)
             else:
                 for net in networks:
-                    if net.dead == 0 :
+                    if net.dead == False:
                         net.update()
-                        net.car.abs_rotation -= settings.car_maniability * delta * net.direction
-                        
+                        net.car.abs_rotation += settings.car_maniability * delta * net.direction
+
                         net.car.apply_vector(net.car.direction_vector())
                         if not net.car.detection(screen):
-                            net.dead = 1
-                    
-                alive = 0
-                for net in networks:
-                    if net.dead == 0 :
-                        alive += 1
-                if not alive :
+                            net.dead = True
+
+                # alive = 0
+                # for net in networks:
+                #     if net.dead == 0 :
+                #         alive += 1
+                if all([x.dead for x in networks]):
                     endgen = True
                     print("MDR PLUS DE VOITURES")
                 for net in networks :
@@ -96,7 +96,7 @@ def main():
         #darwin
 
         for net in networks:
-            net.score = vector(net.car.position,[110,180]).length()
+            net.score = round(vector(net.car.position,[110,180]).length())
 
         networks = darwin(networks)
         for net in networks:
