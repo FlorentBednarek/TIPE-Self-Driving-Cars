@@ -14,7 +14,6 @@ class Network:
         self.layer_3 = [Neuron(0,2) for _ in range(3)]
         self.layer_4 = [Neuron(0,1) for _ in range(2)]
         self.O_layer = [Neuron(0,0)]
-        self.const_neuron = Neuron(1,1)
         self.score = 0
         self.dead = 0
         self.car = car
@@ -27,16 +26,16 @@ class Network:
 
         #    neuron.normalize()
         for i,neuron in enumerate(self.layer_2):
-            neuron.update_value(self.I_layer,self.const_neuron,i)
+            neuron.update_value(self.I_layer,i)
         for i,neuron in enumerate(self.layer_3):
 
-            neuron.update_value(self.layer_2,self.const_neuron,i)
+            neuron.update_value(self.layer_2,i)
         for i,neuron in enumerate(self.layer_4):
 
-            neuron.update_value(self.layer_3,self.const_neuron,i)
+            neuron.update_value(self.layer_3,i)
         for i,neuron in enumerate(self.O_layer):
 
-            neuron.update_value(self.layer_4,self.const_neuron,i)
+            neuron.update_value(self.layer_4,i)
             
         #print("1",self.I_layer,
         #"\n2", self.layer_2,
@@ -54,13 +53,13 @@ class Neuron:
     def __init__(self, value,x):
         self.value = value
         self.weight = [random.random()*2 -1 for i in range(x)]
-        self.bias = random.random()
+        self.bias = random.random() *2-1
 
     def normalize(self):
         self.value = round(sig(self.value),4)
 
-    def update_value(self, neurons: typing.List['Neuron'], const,target,a = 1):
-        self.value = round(sum([x.value*x.weight[target] for x in neurons]) + (const.value * const.weight[0]),4)
+    def update_value(self, neurons: typing.List['Neuron'],target,a = 1):
+        self.value = round(sum([x.value*x.weight[target] for x in neurons]) + self.bias,4)
         self.normalize()
 
     def __str__(self):

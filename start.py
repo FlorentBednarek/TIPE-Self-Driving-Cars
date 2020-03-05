@@ -25,7 +25,9 @@ def main():
 
     import settings # doit ABSOLUMENT être appelé *après* le init()
     screen = pygame.display.set_mode(settings.screen_size)
+    screen.fill((255,255,255))
     pygame.display.set_caption("TIPE")
+
 
     # circuit = [Border((10, 10), (10, 100)),
     #             Border((10, 100), (70, 200)),
@@ -40,18 +42,19 @@ def main():
         networks = [Network(c) for c in cars]
     running = True
     dt = 1
-    screen_width = settings.screen_size[0]
+    screen_width = settings.screen_size[0]    
     while running:
         endgen = 0
         while not endgen:
-            
+            print(len(networks))
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
             screen.fill((255, 255, 255))
             draw.circuit(screen, circuit)
-            draw.car(screen,(net.car for net in networks))
 
+            draw.car(screen,(net.car for net in networks))
 
 
             # Gestion du mouvement de la voiture
@@ -77,7 +80,7 @@ def main():
                 for net in networks:
                     if net.dead == 0 :
                         net.update()
-                        net.car.abs_rotation -= settings.car_maniability * delta * net.direction
+                        net.car.abs_rotation += settings.car_maniability * delta * net.direction
                         
                         net.car.apply_vector(net.car.direction_vector())
                         if not net.car.detection(screen):
@@ -98,12 +101,12 @@ def main():
         for net in networks:
             net.score = vector(net.car.position,[110,180]).length()
 
-        networks = darwin(networks)
         for net in networks:
             net.dead = 0
             net.score = 0
             net.car.position = [110,180]
             net.car.abs_rotation = 90
+        networks = darwin(networks)
     pygame.quit()
 
 
