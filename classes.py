@@ -106,8 +106,8 @@ class Car:
 
     def direction_vector(self) -> vector:
         """Renvoie un vecteur unitaire dans la direction de self.abs_rotation"""
-        return vector(2 * math.cos(math.radians(self.abs_rotation)),
-                      2 * math.sin(math.radians(self.abs_rotation)))
+        return vector(5 * math.cos(math.radians(self.abs_rotation)),
+                      5 * math.sin(math.radians(self.abs_rotation)))
 
     def detection(self, screen) -> bool:
         """Détecte si la voiture est en collision avec une bordure du circuit"""
