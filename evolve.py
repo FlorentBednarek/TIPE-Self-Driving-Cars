@@ -88,64 +88,106 @@ def mutation(networks):
     mutation_rate = 0.3
     for net in networks :
         for neuron in net.I_layer :
+            if random.random() < mutation_rate:
+                  neuron.bias = random.random()*4-2
             for w in neuron.weight:
                 if random.random() <mutation_rate :
-                    w = random.random() *2 -1
+                    w = random.random() *4-2
         for neuron in net.layer_2 :
+            if random.random() < mutation_rate:
+                  neuron.bias = random.random()*4-2
             for w in neuron.weight:
                 if random.random() <mutation_rate :
-                    w = random.random() *2 -1
+                    w = random.random() *4-2
         for neuron in net.layer_3 :
+            if random.random() < mutation_rate:
+                  neuron.bias = random.random()*4-2
             for w in neuron.weight:
                 if random.random() <mutation_rate :
-                    w = random.random() *2 -1        
+                    w = random.random() *4-2        
         for neuron in net.layer_4 :
+            if random.random() < mutation_rate:
+                  neuron.bias = random.random()*4-2
             for w in neuron.weight:
                 if random.random() <mutation_rate :
-                    w = random.random() *2 -1
+                    w = random.random() *4-2
         for neuron in net.O_layer :
+            if random.random() < mutation_rate:
+                  neuron.bias = random.random()*4-2
             for w in neuron.weight:
                 if random.random() <mutation_rate :
-                    w = random.random() *2 -1
+                    w = random.random() *4-2
+          
     return networks
 
-def swap(n1 : typing.List['Network'],n2 : typing.List['Network']):
+def swap(n1,n2):
     swap_rate = 0.6
     for i,neuron in enumerate(n1.I_layer) :
+        if random.random() < swap_rate:
+                  t = neuron.bias
+                  neuron.bias = n2.I_layer[i].bias
+                  n2.I_layer[i].bias = t
         for j,w in enumerate(neuron.weight):
-            if random.random() <swap_rate :
-                w = n2.I_layer[i].weight[j]
+            if random.random() < swap_rate:
+                  t = neuron.bias
+                  neuron.bias = n2.I_layer[i].bias
+                  n2.I_layer[i].bias = t
     for i,neuron in enumerate(n1.layer_2) :
+        if random.random() < swap_rate:
+                  t = neuron.bias
+                  neuron.bias = n2.layer_2[i].bias
+                  n2.layer_2[i].bias = t
         for j,w in enumerate(neuron.weight):
             if random.random() <swap_rate :
+                t = w
                 w = n2.layer_2[i].weight[j]
+                n2.layer_2[i].weight[j] = t
     for i,neuron in enumerate(n1.layer_3) :
+        if random.random() < swap_rate:
+                  t = neuron.bias
+                  neuron.bias = n2.layer_3[i].bias
+                  n2.layer_3[i].bias = t
         for j,w in enumerate(neuron.weight):
             if random.random() <swap_rate :
+                t = w
                 w = n2.layer_3[i].weight[j]
+                n2.layer_3[i].weight[j] = t
     for i,neuron in enumerate(n1.layer_4) :
+        if random.random() < swap_rate:
+                  t = neuron.bias
+                  neuron.bias = n2.layer_4[i].bias
+                  n2.layer_4[i].bias = t
         for j,w in enumerate(neuron.weight):
             if random.random() <swap_rate :
-                w = n2.I_layer[i].weight[j]
+                t = w
+                w = n2.layer_4[i].weight[j]
+                n2.layer_4[i].weight[j] = t
     for i,neuron in enumerate(n1.O_layer) :
+        if random.random() < swap_rate:
+                  t = neuron.bias
+                  neuron.bias = n2.O_layer[i].bias
+                  n2.O_layer[i].bias = t
         for j,w in enumerate(neuron.weight):
             if random.random() <swap_rate :
-                
-                w = n2.I_layer[i].weight[j]
-    return n1
+                t = w
+                w = n2.O_layer[i].weight[j]
+                n2.O_layer[i].weight[j] = t
+    return (n1,n2)
 
 def darwin(networks):
     rank = {net : net.score for net in networks}
     rank = {k: v for k, v in sorted(rank.items(), key=lambda item: item[1])}
     rank2 = []
-    new_gen = []
+
     for k,v in enumerate(rank):
         rank2.append(v)
     new_gen = rank2[-4:]
-    for i in range(16):
+    for i in range(8):
         r = random.sample(range(0, 3), 2)
         n = swap(new_gen[r[0]],new_gen[r[1]])
-        new_gen.append(n)
+        new_gen.append(n[0])
+        new_gen.append(n[1])
+
     
     new_gen = mutation(new_gen)
     return new_gen

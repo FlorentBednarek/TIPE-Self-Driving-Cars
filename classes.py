@@ -50,12 +50,12 @@ class Car:
     """Represente une voiture
     color represente la couleur de la voiture, de type pygame.Color"""
 
-    def __init__(self, circuit:list, color: pygame.Color = pygame.Color(255, 0, 0), abs_rotation: float = 90):
+    def __init__(self, circuit:list, color: pygame.Color = pygame.Color(255, 0, 0), abs_rotation: float = 0):
         """Initialise la voiture
         - color (pygame.Color): couleur de la voiture [par défaut rouge]
         - abs_rotation (float): rotation par rapport au plan de la voiture [par défaut sud]"""
         self.color = color
-        self.position = [110,180]
+        self.position = [80,130]
         self.abs_rotation = abs_rotation
         self.circuit = circuit
 
@@ -99,7 +99,7 @@ class Car:
         if shortest_distance > max_distance:
             if return_real_distance:
                 return -1
-            return 0
+            return 1
         if return_real_distance:
             return shortest_distance
         return shortest_distance/max_distance
