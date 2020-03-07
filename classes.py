@@ -55,7 +55,7 @@ class Car:
         - color (pygame.Color): couleur de la voiture [par défaut rouge]
         - abs_rotation (float): rotation par rapport au plan de la voiture [par défaut sud]"""
         self.color = color
-        self.position = [80,130]
+        self.position = [80,140]
         self.abs_rotation = abs_rotation
         self.circuit = circuit
 
@@ -106,8 +106,8 @@ class Car:
 
     def direction_vector(self) -> vector:
         """Renvoie un vecteur unitaire dans la direction de self.abs_rotation"""
-        return vector(5 * math.cos(math.radians(self.abs_rotation)),
-                      5 * math.sin(math.radians(self.abs_rotation)))
+        return vector(2 * math.cos(math.radians(self.abs_rotation)),
+                      2 * math.sin(math.radians(self.abs_rotation)))
 
     def detection(self, screen) -> bool:
         """Détecte si la voiture est en collision avec une bordure du circuit"""
