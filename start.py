@@ -47,7 +47,7 @@ def manual_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
             car.set_position(min(car.position[0], screen_width),min(car.position[1],screen_width))
         if not car.detection(screen):
             running = False
-            print("MDR T MORT")
+            print("Votre voiture a touché un mur - fin de la partie")
         
         draw.fps(screen, fps_font, clock)
         pygame.display.flip()
@@ -61,6 +61,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
     cars = [Car(circuit, color= rand_color()) for _ in range(settings.cars_number)]
     networks = [Network(c) for c in cars]
     running = True
+    increment = 0
 
     def check_events() -> int:
         # 0 - continue
@@ -75,6 +76,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
         return 0
     
     while running:
+        increment += 1
         endgen = False
         while not endgen:
 
@@ -107,7 +109,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
 
                 if all([x.dead for x in networks]):
                     endgen = True
-                    print("MDR PLUS DE VOITURES")
+                    print(f"Génération N°{increment} terminée")
                 # for net in networks :
             draw.fps(screen, fps_font, clock)
             pygame.display.flip()
