@@ -101,7 +101,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
                         net.car.abs_rotation += settings.car_maniability * delta * net.direction
 
                         net.car.apply_vector(
-                            net.car.direction_vector() * net.engine)
+                            net.car.direction_vector() * net.engine * 2)
                         if not net.car.detection(screen):
                             net.dead = True
 

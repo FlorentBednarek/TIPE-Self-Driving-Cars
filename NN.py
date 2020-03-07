@@ -28,14 +28,11 @@ class Network:
         for i,neuron in enumerate(self.layer_2):
             neuron.update_value(self.I_layer,i)
         for i,neuron in enumerate(self.layer_3):
-
             neuron.update_value(self.layer_2,i)
         for i,neuron in enumerate(self.layer_4):
-
             neuron.update_value(self.layer_3,i)
-        for i,neuron in enumerate(self.O_layer):
-
-            neuron.update_value(self.layer_4,i)
+        # for i,neuron in enumerate(self.O_layer):
+        #     neuron.update_value(self.layer_4,i)
             
         #print("1",self.I_layer,
         #"\n2", self.layer_2,
