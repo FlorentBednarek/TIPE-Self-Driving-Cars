@@ -169,7 +169,6 @@ def add_width_2(pathway: typing.List[tuple]) -> typing.List[Border]:
 
 def circuit_creation():
     pathway = [START_POINT] + INTERMEDIATE_POINTS + [END_POINT]
-    colors = [((index*100+70)%255, (index*90+20)%255, (index*50+40)%255) for index in range(120)]
     for _ in range(GENERATIONS_NUMBER):
         index2 = 0
         last_move = [-1, 1]
