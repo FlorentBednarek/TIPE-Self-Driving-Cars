@@ -126,7 +126,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
             net.car.position = [80, 130]
             net.car.abs_rotation = 0
         networks = darwin(networks)
-        networks = [Network(c) for c in cars]
+        # networks = [Network(c) for c in cars]
 
 
 def main():
