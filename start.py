@@ -112,6 +112,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
                     endgen = True
                 # for net in networks :
             draw.fps(screen, fps_font, clock)
+            draw.gen_nbr(screen, fps_font, increment)
             pygame.display.flip()
             dt = clock.tick(settings.fps)
 

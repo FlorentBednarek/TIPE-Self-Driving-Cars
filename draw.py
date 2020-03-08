@@ -52,3 +52,7 @@ def fps(screen: pygame.Surface, font: pygame.font, clock: pygame.time.Clock):
         color = (51, 102, 0)
     text = font.render("FPS: "+str(nbr), True, color, (255,255,255))
     screen.blit(text, (10,5))
+
+def gen_nbr(screen: pygame.Surface, font: pygame.font, i: int):
+    text = font.render("Génération "+str(i), True, (0,0,0), (255,255,255))
+    screen.blit(text, (10,20))
