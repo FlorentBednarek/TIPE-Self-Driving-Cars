@@ -154,8 +154,8 @@ def add_width_2(pathway: typing.List[tuple]) -> typing.List[Border]:
     points_over.append((pathway[-1][0] - vect.x/2, pathway[-1][1] - vect.y/2))
     points_under.append((pathway[-1][0] + vect.x/2, pathway[-1][1] + vect.y/2))
     # Cleanup of points
-    print(check_angles(points_over))
-    print(check_angles(points_under))
+    check_angles(points_over)
+    check_angles(points_under)
     for path in (points_over, points_under):
         for index in range(len(path)-1):
             color = ((index*100+70)%255, (index*90+20)%255, (index*50+40)%255)
@@ -169,7 +169,6 @@ def add_width_2(pathway: typing.List[tuple]) -> typing.List[Border]:
 
 def circuit_creation():
     pathway = [START_POINT] + INTERMEDIATE_POINTS + [END_POINT]
-    colors = [((index*100+70)%255, (index*90+20)%255, (index*50+40)%255) for index in range(120)]
     for _ in range(GENERATIONS_NUMBER):
         index2 = 0
         last_move = [-1, 1]

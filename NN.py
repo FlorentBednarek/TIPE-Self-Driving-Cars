@@ -21,8 +21,6 @@ class Network:
     def update(self):
         # self.I_layer = [Neuron(max(x,0)) for x in self.car.distances]
         self.I_layer = [Neuron(max(0, self.car.raytrace(36*i-70, 40, return_real_distance=False)), 4) for i in range(5)]
-        # for neuron in self.I_layer:
-        #     pass
 
         #    neuron.normalize()
         for i,neuron in enumerate(self.layer_2):
@@ -31,21 +29,10 @@ class Network:
             neuron.update_value(self.layer_2,i)
         for i,neuron in enumerate(self.layer_4):
             neuron.update_value(self.layer_3,i)
-        # for i,neuron in enumerate(self.O_layer):
-        #     neuron.update_value(self.layer_4,i)
-            
-        #print("1",self.I_layer,
-        #"\n2", self.layer_2,
-        #"\n3", self.layer_3,
-        #"\n4", self.layer_4,
-        #"\nOUTPUT", self.O_layer)
 
     @property
     def direction(self):
-        # t = -1 if (self.layer_4[0].value<-0.2) else (1 if self.layer_4[0].value>0.2 else 0)
-        t = round(self.layer_4[0].value,3)
-        # print(t, self.layer_4, self.I_layer)
-        return t
+        return round(self.layer_4[0].value,3)*2-1
     @property
     def engine(self):
         return self.layer_4[1].value + 0.5
@@ -56,9 +43,9 @@ class Neuron:
 
     def __init__(self, value,x):
         self.value = value
-        self.weight = [random.random()*2-1 for i in range(x)]
 
-        self.bias = random.random() *2-1
+        self.weight = [random.random()*4-2 for i in range(x)]
+        self.bias = random.random()*2-1
 
     def normalize(self):
         self.value = sig(self.value,0.5)

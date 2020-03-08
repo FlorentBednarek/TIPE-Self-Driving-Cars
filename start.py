@@ -114,6 +114,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
 
                 # for net in networks :
             draw.fps(screen, fps_font, clock)
+            draw.gen_nbr(screen, fps_font, increment)
             pygame.display.flip()
             dt = clock.tick(settings.fps)
 
@@ -123,14 +124,15 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
 
         average = round(sum([net.score for net in networks])/len(networks))
         print(f"Génération N°{increment} terminée - score moyen : {average}")
-        networks = darwin(networks)
         
         for net in networks:
             net.dead = 0
             # net.score = 0
             net.car.position = [80, 130]
             net.car.abs_rotation = 0
-       
+
+        networks = darwin(networks)
+        # networks = [Network(c) for c in cars]
 
 
 def main():
