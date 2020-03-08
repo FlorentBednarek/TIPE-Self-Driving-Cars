@@ -97,6 +97,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
             if settings.manual_control:
                 pass
             else:
+                # print("")
                 for net in networks:
                     if net.dead == False:
                         net.update()
@@ -109,7 +110,6 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
 
                 if all([x.dead for x in networks]):
                     endgen = True
-                    print(f"Génération N°{increment} terminée")
                 # for net in networks :
             draw.fps(screen, fps_font, clock)
             pygame.display.flip()
@@ -118,10 +118,11 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
         # darwin
         for net in networks:
             net.score = round(vector(net.car.position, [80,130]).length())
-
+        average = round(sum([net.score for net in networks])/len(networks))
+        print(f"Génération N°{increment} terminée - score moyen : {average}")
         for net in networks:
             net.dead = 0
-            net.score = 0
+            # net.score = 0
             net.car.position = [80, 130]
             net.car.abs_rotation = 0
         networks = darwin(networks)

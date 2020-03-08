@@ -111,12 +111,12 @@ def mutation(networks):
             for w in neuron.weight:
                 if random.random() <mutation_rate :
                     w = random.random() *4-2
-        for neuron in net.O_layer :
-            if random.random() < mutation_rate:
-                  neuron.bias = random.random()*4-2
-            for w in neuron.weight:
-                if random.random() <mutation_rate :
-                    w = random.random() *4-2
+        # for neuron in net.O_layer :
+        #     if random.random() < mutation_rate:
+        #           neuron.bias = random.random()*4-2
+        #     for w in neuron.weight:
+        #         if random.random() <mutation_rate :
+        #             w = random.random() *4-2
           
     return networks
 
@@ -162,33 +162,36 @@ def swap(n1,n2):
                 t = w
                 w = n2.layer_4[i].weight[j]
                 n2.layer_4[i].weight[j] = t
-    for i,neuron in enumerate(n1.O_layer) :
-        if random.random() < swap_rate:
-                  t = neuron.bias
-                  neuron.bias = n2.O_layer[i].bias
-                  n2.O_layer[i].bias = t
-        for j,w in enumerate(neuron.weight):
-            if random.random() <swap_rate :
-                t = w
-                w = n2.O_layer[i].weight[j]
-                n2.O_layer[i].weight[j] = t
+    # for i,neuron in enumerate(n1.O_layer) :
+    #     if random.random() < swap_rate:
+    #               t = neuron.bias
+    #               neuron.bias = n2.O_layer[i].bias
+    #               n2.O_layer[i].bias = t
+    #     for j,w in enumerate(neuron.weight):
+    #         if random.random() <swap_rate :
+    #             t = w
+    #             w = n2.O_layer[i].weight[j]
+    #             n2.O_layer[i].weight[j] = t
     return (n1,n2)
 
 def darwin(networks):
-    rank = {net : net.score for net in networks}
-    rank = {k: v for k, v in sorted(rank.items(), key=lambda item: item[1])}
-    rank2 = []
+    # rank = {net : net.score for net in networks}
+    # rank = {k: v for k, v in sorted(rank.items(), key=lambda item: item[1])}
+    # rank2 = []
 
-    for k,v in enumerate(rank):
-        rank2.append(v)
+    # for k,v in enumerate(rank):
+    #     rank2.append(v)
+    rank2 = sorted(networks, key = lambda net: net.score, reverse=True)
+    # print([(x, x.score) for x in rank2])
     new_gen = rank2[-4:]
-    for i in range(8):
-        r = random.sample(range(0, 3), 2)
+    for _ in range(8):
+        r = random.sample(range(len(new_gen)), 2)
         n = swap(new_gen[r[0]],new_gen[r[1]])
+        # print(len(new_gen), r, n)
         new_gen.append(n[0])
         new_gen.append(n[1])
 
-    
+
     new_gen = mutation(new_gen)
     return new_gen
 
