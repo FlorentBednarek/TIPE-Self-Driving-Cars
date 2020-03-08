@@ -48,7 +48,7 @@ class Network:
         return self.layer_4[0].value *2-1
     @property
     def engine(self):
-        return self.layer_4[1].value 
+        return self.layer_4[1].value + 0.5
     
     
 
@@ -56,8 +56,8 @@ class Neuron:
 
     def __init__(self, value,x):
         self.value = value
-        self.weight = [random.random()*4-2 for i in range(x)]
-        self.bias = random.random() *4-1
+        self.weight = [random.random()*2-1 for i in range(x)]
+        self.bias = random.random() *2-1
 
     def normalize(self):
         self.value = sig(self.value,0.5)

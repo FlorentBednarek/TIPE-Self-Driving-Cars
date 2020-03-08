@@ -89,34 +89,34 @@ def mutation(networks):
     for net in networks :
         for neuron in net.I_layer :
             if random.random() < mutation_rate:
-                  neuron.bias = random.random()*4-2
+                  neuron.bias = random.random()*2-1
             for w in neuron.weight:
                 if random.random() <mutation_rate :
-                    w = random.random() *4-2
+                    w = random.random() *2-1
         for neuron in net.layer_2 :
             if random.random() < mutation_rate:
-                  neuron.bias = random.random()*4-2
+                  neuron.bias = random.random()*2-1
             for w in neuron.weight:
                 if random.random() <mutation_rate :
-                    w = random.random() *4-2
+                    w = random.random() *2-1
         for neuron in net.layer_3 :
             if random.random() < mutation_rate:
-                  neuron.bias = random.random()*4-2
+                  neuron.bias = random.random()*2-1
             for w in neuron.weight:
                 if random.random() <mutation_rate :
-                    w = random.random() *4-2        
+                    w = random.random() *2-1        
         for neuron in net.layer_4 :
             if random.random() < mutation_rate:
-                  neuron.bias = random.random()*4-2
+                  neuron.bias = random.random()*2-1
             for w in neuron.weight:
                 if random.random() <mutation_rate :
-                    w = random.random() *4-2
+                    w = random.random() *2-1
         for neuron in net.O_layer :
             if random.random() < mutation_rate:
-                  neuron.bias = random.random()*4-2
+                  neuron.bias = random.random()*2-1
             for w in neuron.weight:
                 if random.random() <mutation_rate :
-                    w = random.random() *4-2
+                    w = random.random() *2-1
           
     return networks
 

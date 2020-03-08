@@ -60,7 +60,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
     cars = [Car(circuit, color= rand_color()) for _ in range(settings.cars_number)]
     networks = [Network(c) for c in cars]
     running = True
-    
+    nbrgen = 1
     while running:
         endgen = False
         while not endgen:
@@ -94,7 +94,8 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
                 #         alive += 1
                 if all([x.dead for x in networks]):
                     endgen = True
-                    print("MDR PLUS DE VOITURES")
+                    print("fin de la generation : " + str(nbrgen))
+                    nbrgen+=1
                 # for net in networks :
             draw.fps(screen, fps_font, clock)
             pygame.display.flip()
@@ -103,14 +104,15 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
 
         for net in networks:
             net.score = round(vector(net.car.position, [80,130]).length())
-
-        for net in networks:
+        networks = darwin(networks)
+        print(len(cars))
+        for i,net in enumerate(networks):
+            print(i)
+            net.car = cars[i]
             net.dead = 0
-            net.score = 0
             net.car.position = [80, 130]
             net.car.abs_rotation = 0
-        networks = darwin(networks)
-        networks = [Network(c) for c in cars]
+       
 
 
 def main():
@@ -131,6 +133,7 @@ def main():
     #             Border((70, 200), (170, 200))
     #             ]
     circuit = circuit_creation()
+
     if settings.manual_control:
         # cars = [Car(circuit, color=pygame.Color(settings.car_color), )]
         manual_loop(screen, circuit, fps_font)
