@@ -97,9 +97,9 @@ class Car:
             return -1
         shortest_distance = min(distances)
         if shortest_distance > max_distance:
-            if return_real_distance:
-                return -1
-            return 1
+            # if return_real_distance:
+            #     return -1
+            return -1
         if return_real_distance:
             return shortest_distance
         return shortest_distance/max_distance

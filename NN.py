@@ -8,34 +8,31 @@ def sig(n: float,a=1):
 
 class Network:
 
-    def __init__(self, car: Car):
+    def __init__(self, car : Car):
         self.I_layer = [Neuron(0,4) for _ in range(5)]
         self.layer_2 = [Neuron(0,3) for _ in range(4)]
         self.layer_3 = [Neuron(0,2) for _ in range(3)]
-        self.layer_4 = [Neuron(0,1) for _ in range(2)]
-        self.O_layer = [Neuron(0,0)]
+        self.layer_4 = [Neuron(0,0) for _ in range(2)]
+        # self.O_layer = [Neuron(0,0)]
         self.score = 0
         self.dead = 0
         self.car = car
 
     def update(self):
         # self.I_layer = [Neuron(max(x,0)) for x in self.car.distances]
-        self.I_layer = [Neuron(max(0, self.car.raytrace(36*i-70, 40, return_real_distance=False)),4) for i in range(5)]
-        for neuron in self.I_layer:
-            pass
+        self.I_layer = [Neuron(max(0, self.car.raytrace(36*i-70, 40, return_real_distance=False)), 4) for i in range(5)]
+        # for neuron in self.I_layer:
+        #     pass
 
         #    neuron.normalize()
         for i,neuron in enumerate(self.layer_2):
             neuron.update_value(self.I_layer,i)
         for i,neuron in enumerate(self.layer_3):
-
             neuron.update_value(self.layer_2,i)
         for i,neuron in enumerate(self.layer_4):
-
             neuron.update_value(self.layer_3,i)
-        for i,neuron in enumerate(self.O_layer):
-
-            neuron.update_value(self.layer_4,i)
+        # for i,neuron in enumerate(self.O_layer):
+        #     neuron.update_value(self.layer_4,i)
             
         #print("1",self.I_layer,
         #"\n2", self.layer_2,
@@ -45,7 +42,10 @@ class Network:
 
     @property
     def direction(self):
-        return self.layer_4[0].value *2-1
+        # t = -1 if (self.layer_4[0].value<-0.2) else (1 if self.layer_4[0].value>0.2 else 0)
+        t = round(self.layer_4[0].value,3)
+        # print(t, self.layer_4, self.I_layer)
+        return t
     @property
     def engine(self):
         return self.layer_4[1].value + 0.5
@@ -57,6 +57,7 @@ class Neuron:
     def __init__(self, value,x):
         self.value = value
         self.weight = [random.random()*2-1 for i in range(x)]
+
         self.bias = random.random() *2-1
 
     def normalize(self):

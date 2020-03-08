@@ -11,10 +11,10 @@ right_key = pygame.K_RIGHT
 manual_control = False
 
 # Nombre de voitures lors du mode automatique
-cars_number = 20
+cars_number = 30
 
 # Images par seconde
-fps = 30
+fps = 20
 
 # Couleur de la voiture (mode manuel uniquement)
 car_color = "#FF0000"
