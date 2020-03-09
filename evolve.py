@@ -136,7 +136,7 @@ def swap(n1,n2):
             t = neuron.bias
             neuron.bias = n2.layer_2[i].bias
             n2.layer_2[i].bias = t
-        for j,w in enumerate(neuron.weight):
+        for j in range(len(neuron.weight)):
             if random.random() <swap_rate :
                 # t = w
                 # w = n2.layer_2[i].weight[j]
@@ -147,7 +147,7 @@ def swap(n1,n2):
             t = neuron.bias
             neuron.bias = n2.layer_3[i].bias
             n2.layer_3[i].bias = t
-        for j,w in enumerate(neuron.weight):
+        for j in range(len(neuron.weight)):
             if random.random() <swap_rate :
                 # t = w
                 # w = n2.layer_3[i].weight[j]
@@ -158,7 +158,7 @@ def swap(n1,n2):
             t = neuron.bias
             neuron.bias = n2.layer_4[i].bias
             n2.layer_4[i].bias = t
-        for j,w in enumerate(neuron.weight):
+        for j in range(len(neuron.weight)):
             if random.random() <swap_rate :
                 # t = w
                 # w = n2.layer_4[i].weight[j]
