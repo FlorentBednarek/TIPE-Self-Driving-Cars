@@ -67,3 +67,37 @@ def car_specs(screen: pygame.Surface, font: pygame.font, network):
     screen.blit(text1, (7,y-35))
     text2 = font.render("Engine: {}".format( engine), True, (0,0,0), (255,255,255))
     screen.blit(text2, (7,y-20))
+
+def car_network(screen: pygame.Surface, font: pygame.font, network):
+    _, y = screen.get_size()
+    x = 25
+    diam = 15
+    y -= (diam+20)*len(network.I_layer)
+    circle_color = (40,40,250)
+    text_color = (250, 250, 250)
+    circles = list()
+    texts = list()
+    neurons = list()
+    for layer in [network.I_layer, network.layer_2, network.layer_3, network.layer_4]:
+        height = (diam+20)*len(layer)
+        y2 = y + height/2
+        temp = list()
+        for n in layer:
+            circles.append((screen, circle_color, (x,y2), diam))
+            texts.append((font.render(str(round(n.value*1000)), True, text_color, None), (x,y2)))
+            temp.append((n, (x,y2)))
+            y2 -= diam + 20
+        neurons.append(temp)
+        x += diam + 50
+    for e in range(len(neurons)-1):
+        for n1 in neurons[e]:
+            for e2, n2 in enumerate(neurons[e+1]):
+                n_weight = (n1[0].weight[e2]+2)/4
+                color = (round(n_weight*200),)*3
+                w = round(n_weight*3)+1
+                pygame.draw.line(screen, pygame.Color(color), n1[1], n2[1], w)
+    for c in circles:
+        pygame.draw.circle(*c)
+    for text, coo in texts:
+        rect = text.get_rect()
+        screen.blit(text, (coo[0]-rect.width/2,coo[1]-rect.height/2))

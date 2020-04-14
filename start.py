@@ -118,6 +118,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
             draw.fps(screen, fps_font, clock)
             draw.gen_nbr(screen, fps_font, increment)
             draw.car_specs(screen, fps_font, networks[0])
+            draw.car_network(screen, fps_font,networks[0])
             pygame.display.flip()
             dt = clock.tick(settings.fps)
 
