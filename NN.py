@@ -24,15 +24,15 @@ class Network:
 
         #    neuron.normalize()
         for i,neuron in enumerate(self.layer_2):
-            neuron.update_value(self.I_layer,i)
+            neuron.update_value(self.I_layer, i)
         for i,neuron in enumerate(self.layer_3):
-            neuron.update_value(self.layer_2,i)
+            neuron.update_value(self.layer_2, i)
         for i,neuron in enumerate(self.layer_4):
-            neuron.update_value(self.layer_3,i)
+            neuron.update_value(self.layer_3, i)
 
     @property
     def direction(self):
-        return round(self.layer_4[0].value,3)*2-1
+        return round(self.layer_4[0].value*2-1,3)
     @property
     def engine(self):
         return self.layer_4[1].value 
@@ -41,7 +41,7 @@ class Network:
 
 class Neuron:
 
-    def __init__(self, value,x):
+    def __init__(self, value, x):
         self.value = value
         self.weight = [random.random()*4-2 for i in range(x)]
         self.bias = random.random()*2-1
@@ -49,7 +49,7 @@ class Neuron:
     def normalize(self):
         self.value = sig(self.value,0.5)
 
-    def update_value(self, neurons: typing.List['Neuron'],target,a = 1):
+    def update_value(self, neurons: typing.List['Neuron'], target, a = 1):
         self.value = sum([x.value*x.weight[target] for x in neurons]) + self.bias
         self.normalize()
 
