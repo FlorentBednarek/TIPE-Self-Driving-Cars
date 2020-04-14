@@ -15,6 +15,8 @@ def car(screen: pygame.Surface, cars: list):
     - screen (pygame.Surface): écran du jeu
     - cars (list): liste de toutes les voitures (type Car)"""
     for car in cars:
+        if not isinstance(car.color, pygame.Color):
+            car.color = pygame.Color(car.color)
         A = rotate(car,[car.position[0] - 10, car.position[1] - 7])
         B = rotate(car,[car.position[0] + 10, car.position[1] - 7])
         C = rotate(car,[car.position[0] + 10, car.position[1] + 7])
@@ -56,3 +58,12 @@ def fps(screen: pygame.Surface, font: pygame.font, clock: pygame.time.Clock):
 def gen_nbr(screen: pygame.Surface, font: pygame.font, i: int):
     text = font.render("Génération "+str(i), True, (0,0,0), (255,255,255))
     screen.blit(text, (10,20))
+
+def car_specs(screen: pygame.Surface, font: pygame.font, network):
+    direction = round(network.direction, 3)
+    engine = round(network.engine, 3)
+    _, y = screen.get_size()
+    text1 = font.render("Direction: {}".format(direction), True, (0,0,0), (255,255,255))
+    screen.blit(text1, (7,y-35))
+    text2 = font.render("Engine: {}".format( engine), True, (0,0,0), (255,255,255))
+    screen.blit(text2, (7,y-20))

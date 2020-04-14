@@ -1,6 +1,6 @@
 import draw
 from circuit_arthur import circuit_creation
-from classes import *
+from classes import Car
 from NN import Network
 import pygame
 import time
@@ -58,10 +58,12 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
     import settings
     clock = pygame.time.Clock()
     dt = 1
-    cars = [Car(circuit, color= rand_color()) for _ in range(settings.cars_number)]
+    # cars = [Car(circuit, color= rand_color()) for _ in range(settings.cars_number)]
+    cars = [Car(circuit, color= "#ff0000") for _ in range(settings.cars_number)]
     networks = [Network(c) for c in cars]
     running = True
     increment = 0
+    # f = open("car.log", "w")
 
     def check_events() -> int:
         # 0 - continue
@@ -85,6 +87,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
                 endgen = True
                 break
             elif temp==2:
+                # f.close()
                 return
             
             screen.fill((255, 255, 255))
@@ -97,7 +100,8 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
             if settings.manual_control:
                 pass
             else:
-                # print("")
+                # if not networks[0].dead:
+                #     f.write("\t\tDirection : {:05f} - Input : {}\n".format(round(networks[0].direction,5), [round(x.value,3) for x in networks[0].I_layer]))
                 for net in networks:
                     if net.dead == False:
                         net.update()
@@ -110,15 +114,17 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
 
                 if all([x.dead for x in networks]):
                     endgen = True
-                # for net in networks :
+            networks[0].car.color = "#00FF00"
             draw.fps(screen, fps_font, clock)
             draw.gen_nbr(screen, fps_font, increment)
+            draw.car_specs(screen, fps_font, networks[0])
             pygame.display.flip()
             dt = clock.tick(settings.fps)
 
         # darwin
         for net in networks:
             net.score = round(vector(net.car.position, [80,130]).length())
+        # f.write("N°{} - score {}\n\t{}\n\t{}\n\t{}\n\t{}\n".format(increment, networks[0].score, networks[0].I_layer,networks[0].layer_2,networks[0].layer_3,networks[0].layer_4))
         average = round(sum([net.score for net in networks])/len(networks))
         print(f"Génération N°{increment} terminée - score moyen : {average}")
         for net in networks:
