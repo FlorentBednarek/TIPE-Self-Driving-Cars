@@ -62,7 +62,6 @@ class Car:
     @property
     def distances(self):
         return [self.raytrace(20*i-40, 40, return_real_distance=True) for i in range(5)]
-        pass
 
     def set_position(self, x: int, y: int):
         """Modifie la position absolue de la voiture
@@ -89,8 +88,8 @@ class Car:
         if not use_absolute_angle:
             angle = self.abs_rotation + angle
         angle = math.radians(angle)
-        direction = vector(round(math.cos(angle), 5),
-                           round(math.sin(angle), 5))
+        # direction = vector(round(math.cos(angle), 5),
+        #                    round(math.sin(angle), 5))
         distances = [line_intersection((self.position,vector(2 * math.cos(angle),2 * math.sin(angle))*2000),(line.start,line.end)) for line in self.circuit]
         distances = [vector(x[0]-self.position[0],x[1]-self.position[1]).length() for x in distances if len(x) != 0]
         if len(distances) == 0:
