@@ -59,14 +59,20 @@ def gen_nbr(screen: pygame.Surface, font: pygame.font, i: int):
     text = font.render("Génération "+str(i), True, (0,0,0), (255,255,255))
     screen.blit(text, (10,20))
 
-def car_specs(screen: pygame.Surface, font: pygame.font, network):
+def car_specs(screen: pygame.Surface, font: pygame.font, network, init_pos: tuple):
     direction = round(network.direction, 3)
     engine = round(network.engine, 3)
     color = (255,20,20) if network.dead else (0,0,0)
     _, y = screen.get_size()
-    text1 = font.render("Direction: {}".format(direction), True, color, (255,255,255))
+    # Score
+    score = round(vector(network.car.position, init_pos).length())
+    text3 = font.render(f"Score: {score}", True, color, (255,255,255))
+    screen.blit(text3, (7,y-50))    
+    # Direction
+    text1 = font.render(f"Direction: {direction}", True, color, (255,255,255))
     screen.blit(text1, (7,y-35))
-    text2 = font.render("Engine: {}".format( engine), True, color, (255,255,255))
+    # Vitesse
+    text2 = font.render(f"Engine: {engine}", True, color, (255,255,255))
     screen.blit(text2, (7,y-20))
 
 def car_network(screen: pygame.Surface, font: pygame.font, network):
