@@ -124,7 +124,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
 
         # darwin
         for net in networks:
-            net.score = round(vector(net.car.position, [80,130]).length())
+            net.score = round(vector(net.car.position, [80,140]).length())
         # f.write("N°{} - score {}\n\t{}\n\t{}\n\t{}\n\t{}\n".format(increment, networks[0].score, networks[0].I_layer,networks[0].layer_2,networks[0].layer_3,networks[0].layer_4))
         average = round(sum([net.score for net in networks])/len(networks))
         print(f"Génération N°{increment} terminée - score moyen : {average}")
