@@ -7,7 +7,7 @@ from pygame.math import Vector2 as Vector
 from classes import Border
 
 SCREEN_SIZE = (1200, 700)
-START_POINT = (60, 130)
+START_POINT = (50, 120)
 END_POINT = (1100, 100)
 INTERMEDIATE_POINTS = [(500, 160), (650, 600), (900, 600)] # [(200, 500), (550, 610)]
 MIN_ANGLE_DEGREES = 90 # 45
@@ -161,11 +161,12 @@ def add_width_2(pathway: typing.List[tuple]) -> typing.List[Border]:
         for index in range(len(path)-1):
             # color = ((index*100+70)%255, (index*90+20)%255, (index*50+40)%255)
             color = (0, 0, 0)
-            if path[index][1] > SCREEN_SIZE[1]-10:
+            if path[index][1] > SCREEN_SIZE[1] - 10:
                 path[index][1] = SCREEN_SIZE[1] - 10
             elif path[index][1] < 10:
                 path[index][1] = 10
             result.append(Border(path[index], path[index+1], color))
+    result.append(Border(points_over[0], points_under[0], (245, 245, 245)))
     return result
 
 
