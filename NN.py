@@ -37,7 +37,7 @@ class Network:
         return round(self.layer_4[0].value*2-1,3)
     @property
     def engine(self):
-        return self.layer_4[1].value 
+        return min(1,self.layer_4[1].value*1.2)
     
     
 
