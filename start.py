@@ -63,6 +63,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
     networks = [Network(c) for c in cars]
     running = True
     increment = 0
+    init_pos = (80,140)
     # f = open("car.log", "w")
 
     def check_events() -> int:
@@ -117,24 +118,22 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
             networks[0].car.color = "#00FF00"
             draw.fps(screen, fps_font, clock)
             draw.gen_nbr(screen, fps_font, increment)
-            draw.car_specs(screen, fps_font, networks[0])
+            draw.car_specs(screen, fps_font, networks[0], init_pos)
             draw.car_network(screen, fps_font,networks[0])
             pygame.display.flip()
             dt = clock.tick(settings.fps)
 
         # darwin
         for net in networks:
-            net.score = round(vector(net.car.position, [80,140]).length())
+            net.score = round(vector(net.car.position, init_pos).length())
         # f.write("N°{} - score {}\n\t{}\n\t{}\n\t{}\n\t{}\n".format(increment, networks[0].score, networks[0].I_layer,networks[0].layer_2,networks[0].layer_3,networks[0].layer_4))
         average = round(sum([net.score for net in networks])/len(networks))
         print(f"Génération N°{increment} terminée - score moyen : {average}")
         for net in networks:
             net.dead = 0
-            # net.score = 0
             net.car.position = [80, 130]
             net.car.abs_rotation = 0
         networks = darwin(networks)
-        # networks = [Network(c) for c in cars]
 
 
 def main():
@@ -147,13 +146,8 @@ def main():
     
     import settings  # doit ABSOLUMENT être appelé *après* le init()
     screen = pygame.display.set_mode(settings.screen_size)
-    # screen.fill((255,255,255))
     fps_font = pygame.font.SysFont('Arial', 18)
     pygame.display.set_caption("TIPE")
-    # circuit = [Border((10, 10), (10, 100)),
-    #             Border((10, 100), (70, 200)),
-    #             Border((70, 200), (170, 200))
-    #             ]
     circuit = circuit_creation()
     if settings.manual_control:
         manual_loop(screen, circuit, fps_font)
