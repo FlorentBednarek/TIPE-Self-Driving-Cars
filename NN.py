@@ -20,7 +20,9 @@ class Network:
 
     def update(self):
         # self.I_layer = [Neuron(max(x,0)) for x in self.car.distances]
-        self.I_layer = [Neuron(max(0, self.car.raytrace(36*i-70, 40, return_real_distance=False)), 4) for i in range(5)]
+        # self.I_layer = [Neuron(max(0, self.car.raytrace(36*i-70, 40, return_real_distance=False)), 4) for i in range(5)]
+        for i,n in enumerate(self.I_layer):
+            n.value = max(0, self.car.raytrace(36*i-70, 40, return_real_distance=False))
 
         #    neuron.normalize()
         for i,neuron in enumerate(self.layer_2):
