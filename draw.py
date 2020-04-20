@@ -15,6 +15,8 @@ def car(screen: pygame.Surface, cars: list):
     - screen (pygame.Surface): écran du jeu
     - cars (list): liste de toutes les voitures (type Car)"""
     for car in cars:
+        if not isinstance(car.color, pygame.Color):
+            car.color = pygame.Color(car.color)
         A = rotate(car,[car.position[0] - 10, car.position[1] - 7])
         B = rotate(car,[car.position[0] + 10, car.position[1] - 7])
         C = rotate(car,[car.position[0] + 10, car.position[1] + 7])
@@ -56,3 +58,53 @@ def fps(screen: pygame.Surface, font: pygame.font, clock: pygame.time.Clock):
 def gen_nbr(screen: pygame.Surface, font: pygame.font, i: int):
     text = font.render("Génération "+str(i), True, (0,0,0), (255,255,255))
     screen.blit(text, (10,20))
+
+def car_specs(screen: pygame.Surface, font: pygame.font, network, init_pos: tuple):
+    direction = round(network.direction, 3)
+    engine = round(network.engine, 3)
+    color = (255,20,20) if network.dead else (0,0,0)
+    _, y = screen.get_size()
+    # Score
+    score = round(vector(network.car.position, init_pos).length())
+    text3 = font.render(f"Score: {score}", True, color, (255,255,255))
+    screen.blit(text3, (7,y-50))    
+    # Direction
+    text1 = font.render(f"Direction: {direction}", True, color, (255,255,255))
+    screen.blit(text1, (7,y-35))
+    # Vitesse
+    text2 = font.render(f"Engine: {engine}", True, color, (255,255,255))
+    screen.blit(text2, (7,y-20))
+
+def car_network(screen: pygame.Surface, font: pygame.font, network):
+    _, y = screen.get_size()
+    x = 25
+    diam = 15
+    y -= (diam+20)*len(network.I_layer)
+    circle_color = (40,40,250)
+    text_color = (250, 250, 250)
+    circles = list()
+    texts = list()
+    neurons = list()
+    for layer in [network.I_layer, network.layer_2, network.layer_3, network.layer_4]:
+        height = (diam+20)*len(layer)
+        y2 = y + height/2
+        temp = list()
+        for n in layer:
+            circles.append((screen, circle_color, (x,y2), diam))
+            texts.append((font.render(str(round(n.value*1000)), True, text_color, None), (x,y2)))
+            temp.append((n, (x,y2)))
+            y2 -= diam + 20
+        neurons.append(temp)
+        x += diam + 50
+    for e in range(len(neurons)-1):
+        for n1 in neurons[e]:
+            for e2, n2 in enumerate(neurons[e+1]):
+                n_weight = (n1[0].weight[e2]+2)/4
+                color = (round(n_weight*200),)*3
+                w = round(n_weight*3)+1
+                pygame.draw.line(screen, pygame.Color(color), n1[1], n2[1], w)
+    for c in circles:
+        pygame.draw.circle(*c)
+    for text, coo in texts:
+        rect = text.get_rect()
+        screen.blit(text, (coo[0]-rect.width/2,coo[1]-rect.height/2))

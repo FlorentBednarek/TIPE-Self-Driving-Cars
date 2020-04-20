@@ -20,37 +20,40 @@ class Network:
 
     def update(self):
         # self.I_layer = [Neuron(max(x,0)) for x in self.car.distances]
-        self.I_layer = [Neuron(max(0, self.car.raytrace(36*i-70, 40, return_real_distance=False)), 4) for i in range(5)]
+        # self.I_layer = [Neuron(max(0, self.car.raytrace(36*i-70, 40, return_real_distance=False)), 4) for i in range(5)]
+        for i,n in enumerate(self.I_layer):
+            n.value = max(0, self.car.raytrace(36*i-70, 80, return_real_distance=False))
 
         #    neuron.normalize()
         for i,neuron in enumerate(self.layer_2):
-            neuron.update_value(self.I_layer,i)
+            neuron.update_value(self.I_layer, i)
         for i,neuron in enumerate(self.layer_3):
-            neuron.update_value(self.layer_2,i)
+            neuron.update_value(self.layer_2, i)
         for i,neuron in enumerate(self.layer_4):
-            neuron.update_value(self.layer_3,i)
+            neuron.update_value(self.layer_3, i)
 
     @property
     def direction(self):
-        return round(self.layer_4[0].value,3)*2-1
+        return round(self.layer_4[0].value*2-1,3)
     @property
     def engine(self):
-        return self.layer_4[1].value + 0.5
+
+        return min(1,self.layer_4[1].value*1.2)
     
     
 
 class Neuron:
 
-    def __init__(self, value,x):
+    def __init__(self, value, x):
         self.value = value
 
         self.weight = [random.random()*4-2 for i in range(x)]
         self.bias = random.random()*2-1
 
     def normalize(self):
-        self.value = sig(self.value,0.5)
+        self.value = sig(self.value, 3)
 
-    def update_value(self, neurons: typing.List['Neuron'],target,a = 1):
+    def update_value(self, neurons: typing.List['Neuron'], target, a = 1):
         self.value = sum([x.value*x.weight[target] for x in neurons]) + self.bias
         self.normalize()
 

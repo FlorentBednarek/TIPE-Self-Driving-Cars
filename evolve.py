@@ -1,5 +1,6 @@
 from NN import Network
 from classes import Car
+from pygame import Color
 import random
 from copy import deepcopy as copy
 
@@ -138,7 +139,7 @@ def swap(n1,n2):
             t = neuron.bias
             neuron.bias = n2.layer_2[i].bias
             n2.layer_2[i].bias = t
-        for j,w in enumerate(neuron.weight):
+        for j in range(len(neuron.weight)):
             if random.random() <swap_rate :
                 # t = w
                 # w = n2.layer_2[i].weight[j]
@@ -149,7 +150,7 @@ def swap(n1,n2):
             t = neuron.bias
             neuron.bias = n2.layer_3[i].bias
             n2.layer_3[i].bias = t
-        for j,w in enumerate(neuron.weight):
+        for j in range(len(neuron.weight)):
             if random.random() <swap_rate :
                 # t = w
                 # w = n2.layer_3[i].weight[j]
@@ -160,7 +161,7 @@ def swap(n1,n2):
             t = neuron.bias
             neuron.bias = n2.layer_4[i].bias
             n2.layer_4[i].bias = t
-        for j,w in enumerate(neuron.weight):
+        for j in range(len(neuron.weight)):
             if random.random() <swap_rate :
                 # t = w
                 # w = n2.layer_4[i].weight[j]
@@ -207,15 +208,16 @@ def rand_color():
 
 def darwin(networks):
     rank = sorted(networks, key=lambda net: net.score, reverse=True) # first is best
-    print(len(rank), [x.score for x in rank])
+    # print(len(rank), [x.score for x in rank])
     new_gen = [copy(rank[0]), copy(rank[1])]
     for _ in range(0, max(4,len(rank)-4),2):
         new_gen += swap(copy(rank[0]), copy(rank[1]))
     # print(len(new_gen))
     if len(new_gen) < len(rank):
         new_gen += [Network(copy(networks[i].car)) for i in range(len(new_gen), len(rank))]
-    for x in new_gen[2:]:
-        x.car.color = rand_color()
+    for x in new_gen:
+        # x.car.color = rand_color()
+        x.car.color = Color("#FF0000")
         x.car.abs_rotation = 0
     new_gen[2:] = mutation(new_gen[2:])
     # print(len(new_gen), [x.score for x in new_gen])
