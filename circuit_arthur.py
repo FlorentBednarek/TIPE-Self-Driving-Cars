@@ -167,6 +167,7 @@ def add_width_2(pathway: typing.List[tuple]) -> typing.List[Border]:
                 path[index][1] = 10
             result.append(Border(path[index], path[index+1], color))
     result.append(Border(points_over[0], points_under[0], (245, 245, 245)))
+    result.append(Border(points_over[-1], points_under[-1], (245, 30, 30)))
     return result
 
 
