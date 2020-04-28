@@ -87,7 +87,7 @@ def darwin(networks):
 
 
 def mutation(networks):
-    mutation_rate = 0.3
+    mutation_rate = 0.15
     for net in networks :
         for neuron in net.I_layer :
             if random.random() < mutation_rate:

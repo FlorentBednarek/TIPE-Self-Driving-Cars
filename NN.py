@@ -38,7 +38,7 @@ class Network:
     @property
     def engine(self):
 
-        return min(1,self.layer_4[1].value*1.2)
+        return min(1,(self.layer_4[1].value*1.2)+0.5)
     
     
 

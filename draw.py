@@ -90,7 +90,7 @@ def car_network(screen: pygame.Surface, font: pygame.font, network):
         y2 = y + height/2
         temp = list()
         for n in layer:
-            circles.append((screen, circle_color, (x,y2), diam))
+            circles.append((screen, circle_color, (x,round(y2)), diam))
             texts.append((font.render(str(round(n.value*1000)), True, text_color, None), (x,y2)))
             temp.append((n, (x,y2)))
             y2 -= diam + 20
@@ -102,7 +102,7 @@ def car_network(screen: pygame.Surface, font: pygame.font, network):
                 n_weight = (n1[0].weight[e2]+2)/4
                 color = (round(n_weight*200),)*3
                 w = round(n_weight*3)+1
-                pygame.draw.line(screen, pygame.Color(color), n1[1], n2[1], w)
+                pygame.draw.line(screen, color, n1[1], n2[1], w)
     for c in circles:
         pygame.draw.circle(*c)
     for text, coo in texts:
