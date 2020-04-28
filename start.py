@@ -64,7 +64,7 @@ def manual_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
         pygame.display.flip()
         dt = clock.tick(settings.fps)
 
-def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
+def AI_loop(screen: pygame.Surface, circuit: dict, fps_font: pygame.font):
     print("Astuce : Appuyez sur la touche R si une voiture tourne en rond\n")
     import settings
     clock = pygame.time.Clock()
@@ -72,7 +72,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
     # cars = [Car(circuit, color= rand_color()) for _ in range(settings.cars_number)]
     # init_pos = (80,140)
     init_pos, init_angle = calc_starting_pos(circuit["point1"], circuit["point2"])
-    cars = [Car(circuit["bordures"], color= "#ff0000", starting_pos=init_pos, abs_rotation=init_angle) for _ in range(settings.cars_number)]
+    cars = [Car(circuit["bordures"][:-1], color= "#ff0000", starting_pos=init_pos, abs_rotation=init_angle) for _ in range(settings.cars_number)]
     networks = [Network(c) for c in cars]
     running = True
 
@@ -138,20 +138,28 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
             draw.car_network(screen, fps_font,networks[0])
             pygame.display.flip()
             dt = clock.tick(settings.fps)
-        # darwin
+        
+        arrival = circuit["bordures"][-1] # ligne d'arrivée
+        # calcul des scores
         for net in networks:
             net.score = net.car.get_score()
+            if net.car.distance_to_segment(arrival.start, arrival.end) <=8:
+                print("GOTCHA")
+                net.score += 300 # points bonus si la voiture a atteint la ligne d'arrivée
         # f.write("N°{} - score {}\n\t{}\n\t{}\n\t{}\n\t{}\n".format(increment, networks[0].score, networks[0].I_layer,networks[0].layer_2,networks[0].layer_3,networks[0].layer_4))
         average = round(sum([net.score for net in networks])/len(networks))
         print(f"Génération N°{increment} terminée - score moyen : {average}")
         
+        # Darwin
+        networks = darwin(networks)
+
+        # Reset des réseaux/voitures
         for net in networks:
             net.dead = 0
             net.car.position = [80, 130]
-            # net.car.abs_rotation = 0
             net.car.reset()
 
-        networks = darwin(networks)
+        
 
 
 def main():
