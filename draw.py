@@ -41,7 +41,14 @@ def drawvec(screen: pygame.Surface, car, angle:int, length:int, style: str):
     v.scale_to_length(length)
     new_pos = (car.position[0]+v.x,car.position[1]+v.y)
     if style == "Ray":
-        pygame.draw.line(screen,car.color, car.position, new_pos,2)
+        pygame.draw.line(screen,car.color, car.position, new_pos, 1)
+    elif style == "Cross":
+        a = new_pos[0]-5, new_pos[1]-5
+        b = new_pos[0]+5, new_pos[1]+5
+        c = new_pos[0]-5, new_pos[1]+5
+        d = new_pos[0]+5, new_pos[1]-5
+        pygame.draw.line(screen,car.color, a, b, 1)
+        pygame.draw.line(screen,car.color, c, d, 1)
 
 
 def fps(screen: pygame.Surface, font: pygame.font, clock: pygame.time.Clock):

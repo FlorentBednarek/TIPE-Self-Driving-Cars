@@ -10,6 +10,9 @@ right_key = pygame.K_RIGHT
 # Contrôle manuel de la voiture
 manual_control = False
 
+# Affichage du raycasting (None/'Ray'/'Cross')
+display_rays = 'Cross'
+
 # Nombre de voitures lors du mode automatique
 cars_number = 30
 
