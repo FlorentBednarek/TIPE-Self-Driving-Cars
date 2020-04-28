@@ -121,7 +121,7 @@ def add_width(pathway: typing.List[tuple], screen_size: tuple) -> typing.List[Bo
             result.append(Border(path[index], path[index+1], color))
     return result
 
-def add_width_2(pathway: typing.List[tuple]) -> typing.List[Border]:
+def add_width_2(pathway: typing.List[tuple]) -> dict:
     "Enlarge the pathway with a parallel border; version 2"
     points_over = list()
     points_under = list()
@@ -168,10 +168,10 @@ def add_width_2(pathway: typing.List[tuple]) -> typing.List[Border]:
             result.append(Border(path[index], path[index+1], color))
     result.append(Border(points_over[0], points_under[0], (245, 245, 245)))
     result.append(Border(points_over[-1], points_under[-1], (245, 30, 30)))
-    return result
+    return {"bordures":result, "point1":points_over[0], "point2":points_under[0]}
 
 
-def circuit_creation():
+def circuit_creation() -> dict:
     pathway = [START_POINT] + INTERMEDIATE_POINTS + [END_POINT]
     for _ in range(GENERATIONS_NUMBER):
         index2 = 0

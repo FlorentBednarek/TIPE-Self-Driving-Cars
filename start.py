@@ -15,6 +15,14 @@ def rand_color():
     b = random.randint(0, 255)
     return (r, g, b)
 
+def calc_starting_pos(pointA, pointB) -> (tuple, float):
+    """Calcule la position de départ des voitures, en fonction du circuit"""
+    vect = pygame.math.Vector2(pointB[0]-pointA[0], pointB[1]-pointA[1])
+    vect.scale_to_length(vect.length()/2)
+    new_point = pointA[0]+vect.x, pointA[1]+vect.y
+    n = pygame.math.Vector2(-1,0)
+    new_angle = vect.angle_to(n)
+    return new_point, new_angle
 
 def manual_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
     import settings
@@ -59,12 +67,13 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
     clock = pygame.time.Clock()
     dt = 1
     # cars = [Car(circuit, color= rand_color()) for _ in range(settings.cars_number)]
-    cars = [Car(circuit, color= "#ff0000") for _ in range(settings.cars_number)]
+    # init_pos = (80,140)
+    init_pos, init_angle = calc_starting_pos(circuit["point1"], circuit["point2"])
+    cars = [Car(circuit["bordures"], color= "#ff0000", starting_pos=init_pos, abs_rotation=init_angle) for _ in range(settings.cars_number)]
     networks = [Network(c) for c in cars]
     running = True
 
     increment = 0
-    init_pos = (80,140)
     # f = open("car.log", "w")
 
     def check_events() -> int:
@@ -93,7 +102,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
                 return
             
             screen.fill((255, 255, 255))
-            draw.circuit(screen, circuit)
+            draw.circuit(screen, circuit["bordures"])
 
             draw.car(screen, (net.car for net in networks))
 

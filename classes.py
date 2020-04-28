@@ -59,6 +59,7 @@ class Car:
         # self.position = [80,140]
         self.position = list(starting_pos)
         self.init_pos = starting_pos
+        self.init_rotation = abs_rotation
         self.abs_rotation = abs_rotation
         self.circuit = circuit
         self.start_time = time.time()
@@ -74,6 +75,8 @@ class Car:
         self.start_time = time.time()
         self.death_time = None
         self.distance = 0
+        self.position = list(self.init_pos)
+        self.abs_rotation = self.init_rotation
 
     def get_score(self):
         """Calcule le score de la voiture en fonction de la distance parcourue et du temps passé"""
