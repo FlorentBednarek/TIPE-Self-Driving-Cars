@@ -2,6 +2,7 @@ import pygame
 import math
 import draw
 import time
+from settings import display_rays
 vector = pygame.math.Vector2
 
 
@@ -68,7 +69,7 @@ class Car:
 
     @property
     def distances(self):
-        return [self.raytrace(20*i-40, 40, return_real_distance=True) for i in range(5)]
+        return [self.raytrace(36*i-70, 80, return_real_distance=True) for i in range(5)]
     
     def reset(self):
         "Remet à zéro quelques options pour le prochain tour"
@@ -81,8 +82,7 @@ class Car:
     def get_score(self):
         """Calcule le score de la voiture en fonction de la distance parcourue et du temps passé"""
         d = time.time() if self.death_time==None else self.death_time
-        # s = vector(self.position, self.init_pos).length() - (d-self.start_time)*3
-        s = self.distance - (d-self.start_time)*4
+        s = self.distance - (d-self.start_time)*5
         return round(s)
 
     def set_position(self, x: int, y: int):
@@ -135,8 +135,8 @@ class Car:
         """Détecte si la voiture est en collision avec une bordure du circuit"""
         for i, a in enumerate(self.distances):
             if a !=-1 :
-                #draw.drawvec(screen, self, 36*i-70, 40)
-                pass
+                if display_rays != None:
+                    draw.drawvec(screen, self, 36*i-70, a, display_rays)
             if a >= 0 and a <= 8 :
                 return 0
         return 1

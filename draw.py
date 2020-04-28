@@ -1,5 +1,5 @@
 import pygame
-from math import *
+from math import radians, cos, sin
 vector = pygame.math.Vector2
 
 def circuit(screen: pygame.Surface, circuit: list):
@@ -35,11 +35,13 @@ def rotate(car, X:list) -> list:
     (X[1]-car.position[1])*cos(radians(car.abs_rotation)) + (X[0]-car.position[0])*sin(radians(car.abs_rotation)) + car.position[1]]
 
 
-def drawvec(screen: pygame.Surface, car, angle:int, length:int) :
-    v = length * vector(2 * cos(radians(car.abs_rotation + angle)),
+def drawvec(screen: pygame.Surface, car, angle:int, length:int, style: str):
+    v = vector(2 * cos(radians(car.abs_rotation + angle)),
             2 * sin(radians(car.abs_rotation + angle)))
-
-    pygame.draw.line(screen,car.color,(car.position[0],car.position[1]),(car.position[0]+v.x,car.position[1]+v.y),2)
+    v.scale_to_length(length)
+    new_pos = (car.position[0]+v.x,car.position[1]+v.y)
+    if style == "Ray":
+        pygame.draw.line(screen,car.color, car.position, new_pos,2)
 
 
 def fps(screen: pygame.Surface, font: pygame.font, clock: pygame.time.Clock):
