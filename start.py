@@ -20,8 +20,11 @@ def calc_starting_pos(pointA, pointB) -> (tuple, float):
     vect = pygame.math.Vector2(pointB[0]-pointA[0], pointB[1]-pointA[1])
     vect.scale_to_length(vect.length()/2)
     new_point = pointA[0]+vect.x, pointA[1]+vect.y
-    n = pygame.math.Vector2(-1,0)
-    new_angle = vect.angle_to(n)
+    n = pygame.math.Vector2(0,1)
+    new_angle = -round(vect.angle_to(n))
+    vect = vect.rotate(-90)
+    vect.scale_to_length(20)
+    new_point = new_point[0]+vect.x, new_point[1]+vect.y
     return new_point, new_angle
 
 def manual_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
@@ -123,7 +126,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
                         if not net.car.detection(screen):
                             net.dead = True
                             net.car.death_time = time.time()
-
+                
                 if all([x.dead for x in networks]):
                     endgen = True
 
@@ -135,7 +138,6 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
             draw.car_network(screen, fps_font,networks[0])
             pygame.display.flip()
             dt = clock.tick(settings.fps)
-
         # darwin
         for net in networks:
             net.score = net.car.get_score()
@@ -146,7 +148,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
         for net in networks:
             net.dead = 0
             net.car.position = [80, 130]
-            net.car.abs_rotation = 0
+            # net.car.abs_rotation = 0
             net.car.reset()
 
         networks = darwin(networks)
