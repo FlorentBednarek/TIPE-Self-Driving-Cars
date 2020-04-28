@@ -113,6 +113,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
                             net.car.direction_vector() * net.engine * 2)
                         if not net.car.detection(screen):
                             net.dead = True
+                            net.car.death_time = time.time()
 
                 if all([x.dead for x in networks]):
                     endgen = True
@@ -121,15 +122,14 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
             networks[0].car.color = "#00FF00"
             draw.fps(screen, fps_font, clock)
             draw.gen_nbr(screen, fps_font, increment)
-            draw.car_specs(screen, fps_font, networks[0], init_pos)
+            draw.car_specs(screen, fps_font, networks[0])
             draw.car_network(screen, fps_font,networks[0])
             pygame.display.flip()
             dt = clock.tick(settings.fps)
 
         # darwin
         for net in networks:
-
-            net.score = round(vector(net.car.position, init_pos).length())
+            net.score = net.car.get_score()
         # f.write("N°{} - score {}\n\t{}\n\t{}\n\t{}\n\t{}\n".format(increment, networks[0].score, networks[0].I_layer,networks[0].layer_2,networks[0].layer_3,networks[0].layer_4))
         average = round(sum([net.score for net in networks])/len(networks))
         print(f"Génération N°{increment} terminée - score moyen : {average}")
@@ -138,6 +138,7 @@ def AI_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
             net.dead = 0
             net.car.position = [80, 130]
             net.car.abs_rotation = 0
+            net.car.reset()
 
         networks = darwin(networks)
 
