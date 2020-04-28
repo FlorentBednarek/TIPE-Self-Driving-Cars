@@ -1,6 +1,7 @@
 import pygame
 import math
 import draw
+import time
 vector = pygame.math.Vector2
 
 
@@ -50,18 +51,36 @@ class Car:
     """Represente une voiture
     color represente la couleur de la voiture, de type pygame.Color"""
 
-    def __init__(self, circuit:list, color: pygame.Color = pygame.Color(255, 0, 0), abs_rotation: float = 0):
+    def __init__(self, circuit:list, color: pygame.Color = pygame.Color(255, 0, 0), abs_rotation: float = 0, starting_pos: tuple = (80,140)):
         """Initialise la voiture
         - color (pygame.Color): couleur de la voiture [par défaut rouge]
         - abs_rotation (float): rotation par rapport au plan de la voiture [par défaut sud]"""
         self.color = color
-        self.position = [80,140]
+        # self.position = [80,140]
+        self.position = list(starting_pos)
+        self.init_pos = starting_pos
         self.abs_rotation = abs_rotation
         self.circuit = circuit
+        self.start_time = time.time()
+        self.death_time = None
+        self.distance = 0
 
     @property
     def distances(self):
         return [self.raytrace(20*i-40, 40, return_real_distance=True) for i in range(5)]
+    
+    def reset(self):
+        "Remet à zéro quelques options pour le prochain tour"
+        self.start_time = time.time()
+        self.death_time = None
+        self.distance = 0
+
+    def get_score(self):
+        """Calcule le score de la voiture en fonction de la distance parcourue et du temps passé"""
+        d = time.time() if self.death_time==None else self.death_time
+        # s = vector(self.position, self.init_pos).length() - (d-self.start_time)*3
+        s = self.distance - (d-self.start_time)*4
+        return round(s)
 
     def set_position(self, x: int, y: int):
         """Modifie la position absolue de la voiture
@@ -74,6 +93,7 @@ class Car:
         - vector (Vector): vecteur à appliquer"""
         self.position[0] += vector.x
         self.position[1] += vector.y
+        self.distance += vector.length()
 
     def raytrace(self, angle: int, max_distance: int = 100, use_absolute_angle: bool = False, return_real_distance: bool = False):
         """Vérifie si le rayon d'angle donné rencontre un mur avant une certaine distance
