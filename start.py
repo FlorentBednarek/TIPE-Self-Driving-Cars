@@ -72,7 +72,7 @@ def AI_loop(screen: pygame.Surface, circuit: dict, fps_font: pygame.font):
     # cars = [Car(circuit, color= rand_color()) for _ in range(settings.cars_number)]
     # init_pos = (80,140)
     init_pos, init_angle = calc_starting_pos(circuit["point1"], circuit["point2"])
-    cars = [Car(circuit["bordures"][:-1], color= "#ff0000", starting_pos=init_pos, abs_rotation=init_angle) for _ in range(settings.cars_number)]
+    cars = [Car(circuit["bordures"], color= "#ff0000", starting_pos=init_pos, abs_rotation=init_angle) for _ in range(settings.cars_number)]
     networks = [Network(c) for c in cars]
     running = True
 

@@ -66,7 +66,8 @@ class Car:
         self.init_pos = starting_pos
         self.init_rotation = abs_rotation
         self.abs_rotation = abs_rotation
-        self.circuit = circuit
+        self.circuit = circuit[:-1]
+        self.last_border = circuit[-1]
         self.start_time = time.time()
         self.death_time = None
         self.distance = 0
@@ -145,7 +146,7 @@ class Car:
                     draw.drawvec(screen, self, 36*i-70, a, display_rays)
             if a >= 0 and a <= 9:
                 return 0
-        return 1
+        return self.distance_to_segment(self.last_border.start,self.last_border.end) > 8
 
     def distance_to_segment(self, start, end) -> float:
         """Retourne la distance la plus petite entre un point et un segment
