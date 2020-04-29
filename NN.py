@@ -34,11 +34,10 @@ class Network:
 
     @property
     def direction(self):
-        return round(self.layer_4[0].value*2-1,3)
+        return round(self.layer_4[0].value*4-2,3)
     @property
     def engine(self):
-
-        return min(1,(self.layer_4[1].value*1.2)+0.5)
+        return min(1,(self.layer_4[1].value*1.2))
     
     
 
