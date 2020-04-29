@@ -94,6 +94,7 @@ def AI_loop(screen: pygame.Surface, circuit: dict, fps_font: pygame.font):
     while running:
         increment += 1
         endgen = False
+        start_time = time.time()
         while not endgen:
 
             temp = check_events()
@@ -111,29 +112,24 @@ def AI_loop(screen: pygame.Surface, circuit: dict, fps_font: pygame.font):
 
             # Gestion du mouvement de la voiture
             delta = dt * settings.fps / 1000
-            if settings.manual_control:
-                pass
-            else:
-                # if not networks[0].dead:
-                #     f.write("\t\tDirection : {:05f} - Input : {}\n".format(round(networks[0].direction,5), [round(x.value,3) for x in networks[0].I_layer]))
-                for net in networks:
-                    if net.dead == False:
-                        net.update()
-                        net.car.abs_rotation += settings.car_maniability * delta * net.direction
+            for net in networks:
+                if net.dead == False:
+                    net.update()
+                    net.car.abs_rotation += settings.car_maniability * delta * net.direction
 
-                        net.car.apply_vector(
-                            net.car.direction_vector() * net.engine * 2)
-                        if not net.car.detection(screen):
-                            net.dead = True
-                            net.car.death_time = time.time()
+                    net.car.apply_vector(
+                        net.car.direction_vector() * net.engine * 2)
+                    if not net.car.detection(screen):
+                        net.dead = True
+                        net.car.death_time = time.time()
                 
-                if all([x.dead for x in networks]):
-                    endgen = True
+            survived = sum(1 for n in networks if not n.dead)
+            if survived==0:
+                endgen = True
 
                 # for net in networks :
             networks[0].car.color = "#00FF00"
-            draw.fps(screen, fps_font, clock)
-            draw.gen_nbr(screen, fps_font, increment)
+            draw.general_stats(screen, fps_font, clock, increment, survived, start_time)
             draw.car_specs(screen, fps_font, networks[0])
             draw.car_network(screen, fps_font,networks[0])
             pygame.display.flip()

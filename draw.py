@@ -1,4 +1,5 @@
 import pygame
+import time
 from math import radians, cos, sin
 vector = pygame.math.Vector2
 
@@ -51,8 +52,7 @@ def drawvec(screen: pygame.Surface, car, angle:int, length:int, style: str):
         pygame.draw.line(screen,car.color, c, d, 1)
 
 
-def fps(screen: pygame.Surface, font: pygame.font, clock: pygame.time.Clock):
-    # nbr = round(clock.get_fps(),3)
+def general_stats(screen: pygame.Surface, font: pygame.font, clock: pygame.time.Clock, gen_nbr: int, cars_nbr: int, start_time: float):
     t = clock.get_rawtime()
     nbr = 0 if t==0 else round(1000/t)
     if nbr < 7:
@@ -61,12 +61,16 @@ def fps(screen: pygame.Surface, font: pygame.font, clock: pygame.time.Clock):
         color = (255, 153, 0)
     else:
         color = (51, 102, 0)
-    text = font.render("FPS: "+str(nbr), True, color, (255,255,255))
-    screen.blit(text, (10,5))
-
-def gen_nbr(screen: pygame.Surface, font: pygame.font, i: int):
-    text = font.render("Génération "+str(i), True, (0,0,0), (255,255,255))
-    screen.blit(text, (10,20))
+    fps = font.render("FPS: "+str(nbr), True, color, (255,255,255))
+    generations = font.render("Génération "+str(gen_nbr), True, (0,0,0), (255,255,255))
+    s = "s" if cars_nbr>1 else ""
+    cars = font.render("{0} voiture{1} restante{1}".format(cars_nbr,s), True, (0,0,0), (255,255,255))
+    t = round(time.time()-start_time,2)
+    elapsed_time = font.render("Temps : "+str(t), True, (0,0,0), (255,255,255))
+    screen.blit(fps, (10,5))
+    screen.blit(generations, (10,20))
+    screen.blit(cars, (10,35))
+    screen.blit(elapsed_time, (10,50))
 
 def car_specs(screen: pygame.Surface, font: pygame.font, network):
     direction = round(network.direction, 3)
