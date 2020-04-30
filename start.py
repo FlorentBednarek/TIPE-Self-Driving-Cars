@@ -2,11 +2,17 @@ import draw
 from circuit_arthur import circuit_creation
 from classes import Car
 from NN import Network
+from configManager import Config
 import pygame
 import time
 import random
 from evolve import darwin
+from ruamel.yaml import YAML
+
 vector = pygame.math.Vector2
+yaml=YAML(typ="safe", pure=True)
+SETTINGS: Config = None
+fps = 20
 
 
 def rand_color():
@@ -30,11 +36,10 @@ def calc_starting_pos(pointA, pointB) -> (tuple, float):
 
 
 def manual_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
-    import settings
-    screen_width = settings.screen_size[0]
+    screen_width = SETTINGS.screen_size[0]
     clock = pygame.time.Clock()
     dt = 1
-    color = pygame.Color(settings.car_color)
+    color = pygame.Color(SETTINGS.car_color)
     init_pos, init_angle = calc_starting_pos(circuit["point1"], circuit["point2"])
     car = Car(circuit["bordures"], color=color, starting_pos=init_pos,
                 abs_rotation=init_angle)
@@ -49,13 +54,13 @@ def manual_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
         screen.fill((255, 255, 255))
         draw.circuit(screen, circuit["bordures"])
         draw.car(screen, [car])
-        delta = dt * settings.fps / 1000
+        delta = dt * fps / 1000
 
         pressed = pygame.key.get_pressed()
-        if pressed[settings.left_key]:
-            car.abs_rotation -= settings.car_maniability * delta
-        if pressed[settings.right_key]:
-            car.abs_rotation += settings.car_maniability * delta
+        if pressed[SETTINGS.left_key]:
+            car.abs_rotation -= SETTINGS.car_maniability * delta
+        if pressed[SETTINGS.right_key]:
+            car.abs_rotation += SETTINGS.car_maniability * delta
         car.apply_vector(car.direction_vector())
 
         if min(car.position) < 0:
@@ -63,13 +68,13 @@ def manual_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
         if max(car.position) > screen_width:
             car.set_position(min(car.position[0], screen_width), min(
                 car.position[1], screen_width))
-        if not car.detection(screen):
+        if not car.detection(screen, SETTINGS.display_rays):
             running = False
             print("Votre voiture a touché un mur - fin de la partie")
 
         draw.general_stats(screen, fps_font, clock, None, None, start_time)
         pygame.display.flip()
-        dt = clock.tick(settings.fps)
+        dt = clock.tick(fps)
     
     for _ in range(30):
         for event in pygame.event.get():
@@ -79,13 +84,12 @@ def manual_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
 
 def AI_loop(screen: pygame.Surface, circuit: dict, fps_font: pygame.font):
     print("Astuce : Appuyez sur la touche R si une voiture tourne en rond\n")
-    import settings
     clock = pygame.time.Clock()
     dt = 1
     init_pos, init_angle = calc_starting_pos(
         circuit["point1"], circuit["point2"])
     cars = [Car(circuit["bordures"], color="#ff0000", starting_pos=init_pos,
-                abs_rotation=init_angle) for _ in range(settings.cars_number)]
+                abs_rotation=init_angle) for _ in range(SETTINGS.cars_number)]
     networks = [Network(c) for c in cars]
     running = True
 
@@ -122,15 +126,15 @@ def AI_loop(screen: pygame.Surface, circuit: dict, fps_font: pygame.font):
             draw.car(screen, (net.car for net in networks))
 
             # Gestion du mouvement de la voiture
-            delta = dt * settings.fps / 1000
+            delta = dt * fps / 1000
             for net in networks:
                 if net.dead == False:
                     net.update()
-                    net.car.abs_rotation += settings.car_maniability * delta * net.direction
+                    net.car.abs_rotation += SETTINGS.car_maniability * delta * net.direction
 
                     net.car.apply_vector(
                         net.car.direction_vector() * net.engine * 2)
-                    if not net.car.detection(screen):
+                    if not net.car.detection(screen, SETTINGS.display_rays):
                         net.dead = True
                         net.car.death_time = time.time()
 
@@ -145,7 +149,7 @@ def AI_loop(screen: pygame.Surface, circuit: dict, fps_font: pygame.font):
             draw.car_specs(screen, fps_font, networks[0])
             draw.car_network(screen, fps_font, networks[0])
             pygame.display.flip()
-            dt = clock.tick(settings.fps)
+            dt = clock.tick(fps)
 
         arrival = circuit["bordures"][-1]  # ligne d'arrivée
         # calcul des scores
@@ -172,15 +176,23 @@ def main():
     Assurez-vous que toutes les dépendances utilisées soient installées sur votre ordinateur ;
     si besoin entrez `pip install -r requirements.txt` dans votre console
     """)
-    pygame.init()
 
-    import settings  # doit ABSOLUMENT être appelé *après* le init()
-    screen = pygame.display.set_mode(settings.screen_size)
+    # Chargement de la configuration
+    global SETTINGS
+    try:
+        with open("settings.yaml", 'r', encoding='utf8') as f:
+            SETTINGS = Config(yaml.load(f))
+    except AssertionError as e:
+        print("Erreur lors du chargement de la configuration :\n"+e.args[0])
+        return
+
+    pygame.init()
+    screen = pygame.display.set_mode(SETTINGS.screen_size)
     fps_font = pygame.font.SysFont('Arial', 18)
     pygame.display.set_caption("TIPE")
     circuit = circuit_creation()
 
-    if settings.manual_control:
+    if SETTINGS.manual_control:
         manual_loop(screen, circuit, fps_font)
     else:
         AI_loop(screen, circuit, fps_font)

@@ -2,7 +2,7 @@ import pygame
 import math
 import draw
 import time
-from settings import display_rays
+from typing import Optional
 from pygame.math import Vector2 as vector
 from numpy import arccos, array, dot, pi, cross, array
 from numpy.linalg import det, norm
@@ -139,7 +139,7 @@ class Car:
         return vector(2 * math.cos(math.radians(self.abs_rotation)),
                       2 * math.sin(math.radians(self.abs_rotation)))
 
-    def detection(self, screen) -> bool:
+    def detection(self, screen: pygame.Surface, display_rays: Optional[str]) -> bool:
         """Détecte si la voiture est en collision avec une bordure du circuit"""
         for i, a in enumerate(self.distances):
             if a != -1:
