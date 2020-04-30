@@ -123,7 +123,7 @@ def car_network(screen: pygame.Surface, font: pygame.font, network):
             temp.append((n, (x,y2)))
             y2 -= diam + 20
         neurons.append(temp)
-        x += diam + 50
+        x += diam + 80
     for e in range(len(neurons)-1):
         for n1 in neurons[e]:
             for e2, n2 in enumerate(neurons[e+1]):
