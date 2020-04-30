@@ -61,7 +61,6 @@ class Car:
         - abs_rotation (float): rotation par rapport au plan de la voiture [par défaut sud]
         - starting_pos (tuple): position de départ de la voiture en (x,y) [par défaut (80, 140)]"""
         self.color = color
-        # self.position = [80,140]
         self.position = list(starting_pos)
         self.init_pos = starting_pos
         self.init_rotation = abs_rotation
@@ -71,10 +70,12 @@ class Car:
         self.start_time = time.time()
         self.death_time = None
         self.distance = 0
+        self.rays = [-70, -52, -35, -17, 0, 17, 35, 52, 70] # angle des rayons
+        self.rays_length = 80 # longueur des rayons
 
     @property
     def distances(self):
-        return [self.raytrace(36*i-70, 80, return_real_distance=True) for i in range(5)]
+        return [self.raytrace(angle, self.rays_length, return_real_distance=True) for angle in self.rays]
 
     def reset(self):
         "Remet à zéro quelques options pour le prochain tour"
@@ -143,7 +144,7 @@ class Car:
         for i, a in enumerate(self.distances):
             if a != -1:
                 if display_rays != None:
-                    draw.drawvec(screen, self, 36*i-70, a, display_rays)
+                    draw.drawvec(screen, self, self.rays[i], a, display_rays)
             if a >= 0 and a <= 9:
                 return 0
         return self.distance_to_segment(self.last_border.start,self.last_border.end) > 8
