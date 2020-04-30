@@ -217,7 +217,6 @@ def darwin(networks):
         new_gen += [Network(copy(networks[i].car)) for i in range(len(new_gen), len(rank))]
     for x in new_gen:
         # x.car.color = rand_color()
-        x.car.color = Color("#FF0000")
         x.car.abs_rotation = 0
     new_gen[2:] = mutation(new_gen[2:])
     # print(len(new_gen), [x.score for x in new_gen])

@@ -1,7 +1,14 @@
 import pygame
 import time
 from math import radians, cos, sin
+from configManager import Config, load_from_filename
+
 vector = pygame.math.Vector2
+COLORS: dict = None
+
+def init():
+    global COLORS
+    COLORS = load_from_filename("settings.yaml").colors
 
 def circuit(screen: pygame.Surface, circuit: list):
     """Création du circuit sur l'écran
@@ -54,53 +61,55 @@ def drawvec(screen: pygame.Surface, car, angle:int, length:int, style: str):
 
 def general_stats(screen: pygame.Surface, font: pygame.font, clock: pygame.time.Clock, gen_nbr: int, cars_nbr: int, start_time: float):
     texts = list()
+    bg = COLORS['background']
+    text_color = COLORS['text']
     # FPS
     t = clock.get_rawtime()
     nbr = 0 if t==0 else round(1000/t)
     if nbr < 7:
-        color = (255, 0, 0)
+        # color = (255, 0, 0)
+        color = COLORS['fps-colors'][0]
     elif nbr < 12:
-        color = (255, 153, 0)
+        # color = (255, 153, 0)
+        color = COLORS['fps-colors'][1]
     else:
-        color = (51, 102, 0)
-    fps = font.render("FPS: "+str(nbr), True, color, (255,255,255))
+        # color = (51, 102, 0)
+        color = COLORS['fps-colors'][2]
+    fps = font.render("FPS: "+str(nbr), True, color, bg)
     texts.append(fps)
     # Generation Nbr
     if gen_nbr != None:
-        generations = font.render("Génération "+str(gen_nbr), True, (0,0,0), (255,255,255))
+        generations = font.render("Génération "+str(gen_nbr), True, text_color, bg)
         texts.append(generations)
     # Alive networks
     if cars_nbr != None:
         s = "s" if cars_nbr>1 else ""
-        cars = font.render("{0} voiture{1} restante{1}".format(cars_nbr,s), True, (0,0,0), (255,255,255))
+        cars = font.render("{0} voiture{1} restante{1}".format(cars_nbr,s), True, text_color, bg)
         texts.append(cars)
     # Elapsed time
     t = round(time.time()-start_time,2)
-    elapsed_time = font.render("Temps : "+str(t), True, (0,0,0), (255,255,255))
+    elapsed_time = font.render("Temps : "+str(t), True, text_color, bg)
     texts.append(elapsed_time)
     # Display them all
     for e,t in enumerate(texts):
         screen.blit(t, (10, 5+e*15))
-    # screen.blit(fps, (10,5))
-    # screen.blit(generations, (10,20))
-    # screen.blit(cars, (10,35))
-    # screen.blit(elapsed_time, (10,50))
 
 def car_specs(screen: pygame.Surface, font: pygame.font, network):
     direction = round(network.direction, 3)
     engine = round(network.engine, 3)
-    color = (255,20,20) if network.dead else (0,0,0)
+    color = COLORS["dead-stats"] if network.dead else COLORS["text"]
+    bg = COLORS["background"]
     _, y = screen.get_size()
     # Score
     # score = round(vector(network.car.position, init_pos).length())
     score = network.car.get_score()
-    text3 = font.render(f"Score: {score}", True, color, (255,255,255))
+    text3 = font.render(f"Score: {score}", True, color, bg)
     screen.blit(text3, (7,y-50))    
     # Direction
-    text1 = font.render(f"Direction: {direction}", True, color, (255,255,255))
+    text1 = font.render(f"Direction: {direction}", True, color, bg)
     screen.blit(text1, (7,y-35))
     # Vitesse
-    text2 = font.render(f"Engine: {engine}", True, color, (255,255,255))
+    text2 = font.render(f"Engine: {engine}", True, color, bg)
     screen.blit(text2, (7,y-20))
 
 def car_network(screen: pygame.Surface, font: pygame.font, network):
@@ -108,8 +117,8 @@ def car_network(screen: pygame.Surface, font: pygame.font, network):
     x = 25
     diam = 15
     y -= (diam+20)*len(network.I_layer)
-    circle_color = (40,40,250)
-    text_color = (250, 250, 250)
+    circle_color = COLORS["neuron-color"]
+    text_color =  COLORS["neuron-text-color"]
     circles = list()
     texts = list()
     neurons = list()

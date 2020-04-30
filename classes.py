@@ -54,7 +54,7 @@ class Car:
     """Represente une voiture
     color represente la couleur de la voiture, de type pygame.Color"""
 
-    def __init__(self, circuit: list, color: pygame.Color = pygame.Color(255, 0, 0), abs_rotation: float = 0, starting_pos: tuple = (80, 140)):
+    def __init__(self, circuit: list, color: pygame.Color, abs_rotation: float = 0, starting_pos: tuple = (80, 140)):
         """Initialise la voiture
         - circuit (list): liste des bordures du circuit
         - color (pygame.Color): couleur de la voiture [par défaut rouge]
@@ -169,7 +169,7 @@ class Border:
     """Represente une bordure de circuit
     Ligne droite allant de A(x,y) a B(x,y)"""
 
-    def __init__(self, A: tuple, B: tuple, color: pygame.Color = pygame.Color(96, 96, 96)):
+    def __init__(self, A: tuple, B: tuple, color: pygame.Color):
         assert isinstance(A, (tuple, list)) and isinstance(B, (tuple, list)) and len(
             A) == len(B) == 2, "A et B doivent être des tuples de longueur 2"
         self.color = color

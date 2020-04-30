@@ -121,7 +121,7 @@ def add_width(pathway: typing.List[tuple], screen_size: tuple) -> typing.List[Bo
             result.append(Border(path[index], path[index+1], color))
     return result
 
-def add_width_2(pathway: typing.List[tuple]) -> dict:
+def add_width_2(pathway: typing.List[tuple], color: typing.Dict[str,pygame.Color]) -> dict:
     "Enlarge the pathway with a parallel border; version 2"
     points_over = list()
     points_under = list()
@@ -160,18 +160,17 @@ def add_width_2(pathway: typing.List[tuple]) -> dict:
     for path in (points_over, points_under):
         for index in range(len(path)-1):
             # color = ((index*100+70)%255, (index*90+20)%255, (index*50+40)%255)
-            color = (0, 0, 0)
             if path[index][1] > SCREEN_SIZE[1] - 10:
                 path[index][1] = SCREEN_SIZE[1] - 10
             elif path[index][1] < 10:
                 path[index][1] = 10
-            result.append(Border(path[index], path[index+1], color))
-    result.append(Border(points_over[0], points_under[0], (245, 245, 245)))
-    result.append(Border(points_over[-1], points_under[-1], (245, 30, 30)))
+            result.append(Border(path[index], path[index+1], color["general"]))
+    result.append(Border(points_over[0], points_under[0], color["begin"]))
+    result.append(Border(points_over[-1], points_under[-1], color["end"]))
     return {"bordures":result, "point1":points_over[0], "point2":points_under[0]}
 
 
-def circuit_creation() -> dict:
+def circuit_creation(color: pygame.Color) -> dict:
     pathway = [START_POINT] + INTERMEDIATE_POINTS + [END_POINT]
     for _ in range(GENERATIONS_NUMBER):
         index2 = 0
@@ -184,4 +183,4 @@ def circuit_creation() -> dict:
                 index2 += 1
             index2 += 1
     # print("\n", len(pathway), "points")
-    return add_width_2(pathway)
+    return add_width_2(pathway, color)

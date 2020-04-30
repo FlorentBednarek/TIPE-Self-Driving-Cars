@@ -2,15 +2,13 @@ import draw
 from circuit_arthur import circuit_creation
 from classes import Car
 from NN import Network
-from configManager import Config
+from configManager import Config, load_from_filename
 import pygame
 import time
 import random
 from evolve import darwin
-from ruamel.yaml import YAML
 
 vector = pygame.math.Vector2
-yaml=YAML(typ="safe", pure=True)
 SETTINGS: Config = None
 fps = 20
 
@@ -51,7 +49,7 @@ def manual_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
             if event.type == pygame.QUIT:
                 return
 
-        screen.fill((255, 255, 255))
+        screen.fill(SETTINGS.colors["background"])
         draw.circuit(screen, circuit["bordures"])
         draw.car(screen, [car])
         delta = dt * fps / 1000
@@ -88,7 +86,7 @@ def AI_loop(screen: pygame.Surface, circuit: dict, fps_font: pygame.font):
     dt = 1
     init_pos, init_angle = calc_starting_pos(
         circuit["point1"], circuit["point2"])
-    cars = [Car(circuit["bordures"], color="#ff0000", starting_pos=init_pos,
+    cars = [Car(circuit["bordures"], color= SETTINGS.colors["cars"], starting_pos=init_pos,
                 abs_rotation=init_angle) for _ in range(SETTINGS.cars_number)]
     networks = [Network(c) for c in cars]
     running = True
@@ -121,7 +119,7 @@ def AI_loop(screen: pygame.Surface, circuit: dict, fps_font: pygame.font):
                 # f.close()
                 return
 
-            screen.fill((255, 255, 255))
+            screen.fill(SETTINGS.colors["background"])
             draw.circuit(screen, circuit["bordures"])
             draw.car(screen, (net.car for net in networks))
 
@@ -142,8 +140,6 @@ def AI_loop(screen: pygame.Surface, circuit: dict, fps_font: pygame.font):
             if survived == 0:
                 endgen = True
 
-                # for net in networks :
-            networks[0].car.color = "#00FF00"
             draw.general_stats(screen, fps_font, clock,
                                increment, survived, start_time)
             draw.car_specs(screen, fps_font, networks[0])
@@ -166,8 +162,10 @@ def AI_loop(screen: pygame.Surface, circuit: dict, fps_font: pygame.font):
         # Reset des réseaux/voitures
         for net in networks:
             net.dead = 0
-            net.car.position = [80, 130]
+            # net.car.position = [80, 130]
+            net.car.color = SETTINGS.colors["cars"]
             net.car.reset()
+        networks[0].car.color = SETTINGS.colors["main_car"]
 
 
 def main():
@@ -180,17 +178,21 @@ def main():
     # Chargement de la configuration
     global SETTINGS
     try:
-        with open("settings.yaml", 'r', encoding='utf8') as f:
-            SETTINGS = Config(yaml.load(f))
+        SETTINGS = load_from_filename("settings.yaml")
     except AssertionError as e:
         print("Erreur lors du chargement de la configuration :\n"+e.args[0])
         return
 
+    draw.init()
     pygame.init()
     screen = pygame.display.set_mode(SETTINGS.screen_size)
     fps_font = pygame.font.SysFont('Arial', 18)
     pygame.display.set_caption("TIPE")
-    circuit = circuit_creation()
+    border_colors = {
+        "general": SETTINGS.colors["borders"],
+        "begin": SETTINGS.colors["border-begin"],
+        "end": SETTINGS.colors["border-end"]}
+    circuit = circuit_creation(border_colors)
 
     if SETTINGS.manual_control:
         manual_loop(screen, circuit, fps_font)

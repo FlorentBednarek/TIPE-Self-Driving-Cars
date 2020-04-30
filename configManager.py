@@ -1,6 +1,14 @@
-from pygame import locals
+from pygame import locals, Color
 import re
 import typing
+import json
+from ruamel.yaml import YAML
+yaml=YAML(typ="safe", pure=True)
+
+def load_from_filename(filename: str):
+    with open(filename, 'r', encoding='utf8') as f:
+        result = yaml.load(f)
+    return Config(result)
 
 class Config():
     def __init__(self, conf: dict):
@@ -22,5 +30,17 @@ class Config():
         self.car_color: str = conf["car_color"]
         assert isinstance(conf["screen_size"],list) and len(conf["screen_size"])==2 and all(isinstance(i,int) for i in conf["screen_size"]), "Invalid formar for screen_size"
         self.screen_size: typing.List[int] = conf["screen_size"]
-        assert conf["theme"] in ["dark", "light"], "Invalid option for theme"
+        try:
+            with open("themes/"+conf["theme"].lower()+".json", "r", encoding="utf8") as f:
+                self.colors: dict = json.load(f)
+        except FileNotFoundError:
+            raise Exception("Invalid option for theme")
         self.theme: str = conf["theme"]
+        self.treat_colors()
+    
+    def treat_colors(self):
+        for k,v in self.colors.items():
+            if isinstance(v, str):
+                self.colors[k] = Color(v)
+            elif isinstance(v, list):
+                self.colors[k] = [Color(i) for i in v]
