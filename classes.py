@@ -70,7 +70,7 @@ class Car:
         self.start_time = time.time()
         self.death_time = None
         self.distance = 0
-        self.rays = [-70, -52, -35, -17, 0, 17, 35, 52, 70] # angle des rayons
+        self.rays = [-70, -50, -30, -10, 10, 30, 50, 70] # angle des rayons
         self.rays_length = 80 # longueur des rayons
 
     @property
