@@ -34,8 +34,12 @@ def manual_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
     screen_width = settings.screen_size[0]
     clock = pygame.time.Clock()
     dt = 1
-    car = Car(circuit, color=pygame.Color(settings.car_color))
+    color = pygame.Color(settings.car_color)
+    init_pos, init_angle = calc_starting_pos(circuit["point1"], circuit["point2"])
+    car = Car(circuit["bordures"], color=color, starting_pos=init_pos,
+                abs_rotation=init_angle)
     running = True
+    start_time = time.time()
 
     while running:
         for event in pygame.event.get():
@@ -43,7 +47,7 @@ def manual_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
                 return
 
         screen.fill((255, 255, 255))
-        draw.circuit(screen, circuit)
+        draw.circuit(screen, circuit["bordures"])
         draw.car(screen, [car])
         delta = dt * settings.fps / 1000
 
@@ -63,10 +67,15 @@ def manual_loop(screen: pygame.Surface, circuit: list, fps_font: pygame.font):
             running = False
             print("Votre voiture a touché un mur - fin de la partie")
 
-        draw.fps(screen, fps_font, clock)
+        draw.general_stats(screen, fps_font, clock, None, None, start_time)
         pygame.display.flip()
         dt = clock.tick(settings.fps)
-
+    
+    for _ in range(30):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return
+        time.sleep(0.05)
 
 def AI_loop(screen: pygame.Surface, circuit: dict, fps_font: pygame.font):
     print("Astuce : Appuyez sur la touche R si une voiture tourne en rond\n")

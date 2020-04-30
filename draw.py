@@ -53,6 +53,8 @@ def drawvec(screen: pygame.Surface, car, angle:int, length:int, style: str):
 
 
 def general_stats(screen: pygame.Surface, font: pygame.font, clock: pygame.time.Clock, gen_nbr: int, cars_nbr: int, start_time: float):
+    texts = list()
+    # FPS
     t = clock.get_rawtime()
     nbr = 0 if t==0 else round(1000/t)
     if nbr < 7:
@@ -62,15 +64,27 @@ def general_stats(screen: pygame.Surface, font: pygame.font, clock: pygame.time.
     else:
         color = (51, 102, 0)
     fps = font.render("FPS: "+str(nbr), True, color, (255,255,255))
-    generations = font.render("Génération "+str(gen_nbr), True, (0,0,0), (255,255,255))
-    s = "s" if cars_nbr>1 else ""
-    cars = font.render("{0} voiture{1} restante{1}".format(cars_nbr,s), True, (0,0,0), (255,255,255))
+    texts.append(fps)
+    # Generation Nbr
+    if gen_nbr != None:
+        generations = font.render("Génération "+str(gen_nbr), True, (0,0,0), (255,255,255))
+        texts.append(generations)
+    # Alive networks
+    if cars_nbr != None:
+        s = "s" if cars_nbr>1 else ""
+        cars = font.render("{0} voiture{1} restante{1}".format(cars_nbr,s), True, (0,0,0), (255,255,255))
+        texts.append(cars)
+    # Elapsed time
     t = round(time.time()-start_time,2)
     elapsed_time = font.render("Temps : "+str(t), True, (0,0,0), (255,255,255))
-    screen.blit(fps, (10,5))
-    screen.blit(generations, (10,20))
-    screen.blit(cars, (10,35))
-    screen.blit(elapsed_time, (10,50))
+    texts.append(elapsed_time)
+    # Display them all
+    for e,t in enumerate(texts):
+        screen.blit(t, (10, 5+e*15))
+    # screen.blit(fps, (10,5))
+    # screen.blit(generations, (10,20))
+    # screen.blit(cars, (10,35))
+    # screen.blit(elapsed_time, (10,50))
 
 def car_specs(screen: pygame.Surface, font: pygame.font, network):
     direction = round(network.direction, 3)

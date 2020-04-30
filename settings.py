@@ -1,17 +1,17 @@
 import pygame
 
-# Maniabilité du véhicule (nombre de degrés par fps dans un virage)
-car_maniability = 1.3
+# Maniabilité du véhicule (nombre de degrés max par frame dans un virage)
+car_maniability = 1.5
 
 # Touches de contrôle de la voiture, gauche et droite
 left_key = pygame.K_LEFT
 right_key = pygame.K_RIGHT
 
-# Contrôle manuel de la voiture
+# Contrôle manuel de la voiture (True/False)
 manual_control = False
 
 # Affichage du raycasting (None/'Ray'/'Cross')
-display_rays = 'Cross'
+display_rays = None
 
 # Nombre de voitures lors du mode automatique
 cars_number = 30
