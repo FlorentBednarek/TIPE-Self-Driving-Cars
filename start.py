@@ -108,6 +108,7 @@ def AI_loop(screen: pygame.Surface, circuit: dict, fps_font: pygame.font):
     while running:
         increment += 1
         endgen = False
+        cleanup_done = False
         start_time = time.time()
         while not endgen:
 
@@ -139,6 +140,11 @@ def AI_loop(screen: pygame.Surface, circuit: dict, fps_font: pygame.font):
             survived = sum(1 for n in networks if not n.dead)
             if survived == 0:
                 endgen = True
+            elif time.time()-start_time > 10 and not cleanup_done:
+                for net in networks:
+                    if (not net.dead) and net.car.position[0] < 150:
+                        net.dead = True
+                        net.car.death_time = time.time()
 
             draw.general_stats(screen, fps_font, clock,
                                increment, survived, start_time)
