@@ -21,4 +21,4 @@ car_color: "#FF0000"
 screen_size: [1200,700]
 
 # Thème utilisé (light/dark)
-theme: light
+theme: dark
