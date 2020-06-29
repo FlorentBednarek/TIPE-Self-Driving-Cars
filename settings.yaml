@@ -17,8 +17,14 @@ cars_number: 30
 # Couleur de la voiture (mode manuel uniquement)
 car_color: "#FF0000"
 
-# Taille de la fenêtre
+# Taille de la fenêtre [par défaut 1200*700]
 screen_size: [1200,700]
 
 # Thème utilisé (light/dark)
-theme: dark
+theme: light
+
+# Utilisation du debug, qui affichera les statistiques de performances dans un fichier log (True/False)
+debug_mode: False
+
+# Sauvegarde automatique du meilleure réseau neuronal à la fin du programme
+autosave: False

@@ -64,7 +64,9 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/_build/
+_build
+_static
+_templates
 
 # PyBuilder
 target/
@@ -108,3 +110,6 @@ venv.bak/
 
 # MacOS trash things
 .DS_Store
+
+# Other things
+backup.json
